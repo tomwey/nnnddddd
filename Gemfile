@@ -27,6 +27,21 @@ gem 'spring',        group: :development
 # 防止大量请求的IP
 gem 'rack-attack'
 
+# 队列处理消息发送
+gem 'sidekiq'
+gem 'sinatra', :require => nil
+
+# redis
+gem 'redis'
+gem 'hiredis'
+# redis 命名空间
+gem 'redis-namespace'
+# 将一些数据存放入 Redis
+gem 'redis-objects'
+
+# 后台管理系统
+gem 'activeadmin', github: 'activeadmin'
+
 # Use postgresql as the database for Active Record
 gem 'pg'
 
@@ -58,6 +73,10 @@ gem 'newrelic-grape'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-utf8_sanitizer'
 
+# API doc
+gem 'grape-swagger'
+gem 'grape-swagger-rails'
+
 # gem 'state_machine'
 
 # rest请求
@@ -84,6 +103,8 @@ group :development do
   
   # puma server
   # gem 'capistrano3-puma', require: false
+  
+  gem 'capistrano-sidekiq'
   
   gem 'quiet_assets'
   
