@@ -8,7 +8,7 @@ set :scm, :git
 set :repo_url, "git@github.com:tomwey/#{fetch(:application)}.git"
 
 set :rbenv_type, :user
-set :rbenv_ruby, '2.1.8-p440'
+set :rbenv_ruby, '2.1.8'
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 
