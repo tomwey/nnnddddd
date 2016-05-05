@@ -18,6 +18,7 @@
         password_confirmation: "确认密码"
       category:
         name: "类别名"
+        icon: "Icon"
         sort: "显示顺序"
       banner:
         image: "广告图片"

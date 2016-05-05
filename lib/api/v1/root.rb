@@ -7,6 +7,7 @@ module API
       helpers API::SharedParams
       
       mount API::V1::Welcome
+      mount API::V1::CategoriesAPI
       # mount API::V1::UsersAPI
       # mount API::V1::CategoriesAPI
       # mount API::V1::ProductsAPI

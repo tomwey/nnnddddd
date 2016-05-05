@@ -23,8 +23,8 @@ module API
       # 类别详情
       class Category < Base
         expose :name, format_with: :null
-        expose :image do |model, opts|
-          model.image.blank? ? "" : model.image.url(:thumb)
+        expose :icon do |model, opts|
+          model.icon.blank? ? "" : model.icon.url(:icon)
          end
       end
       
