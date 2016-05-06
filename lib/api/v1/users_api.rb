@@ -1,127 +1,49 @@
 module API
   module V1
     class UsersAPI < Grape::API
-      # 用户快捷登录
+      # 用户账号管理
       resource :account do
+        
+        desc "用户注册"
+        params do
+          requires :mobile,   type: String, desc: "用户手机号"
+          requires :password, type: String, desc: "密码"
+        end
+        post :signup do
+          # 手机号检查
+          return render_error(1001, '不正确的手机号') unless check_mobile(params[:mobile])
+          
+          # 是否已经注册检查
+          user = User.find_by(mobile: params[:mobile])
+          return render_error(1002, "#{params[:mobile]}已经注册") unless user.blank?
+          
+          # 密码长度检查
+          return render_error(1003, "密码太短，至少为6位") unless params[:password].length >= 6
+          
+          user = User.create!(mobile: params[:mobile], password: params[:password], password_confirmation: params[:password])
+          render_json(user, API::V1::Entities::User)
+        end # end post signup
+        
         desc "用户登录"
         params do
-          requires :mobile, type: String, desc: "用户手机号，必须"
-          requires :code,   type: String, desc: "短信验证码，必须"
+          requires :mobile,   type: String, desc: "用户手机号，必须"
+          requires :password, type: String, desc: "密码，必须"
         end
         post :login do
           # 手机号检测
-          unless check_mobile(params[:mobile])
-            return render_error(1001, "不正确的手机号")
+          return render_error(1001, "不正确的手机号") unless check_mobile(params[:mobile])
+          
+          # 登录
+          user = User.find_by(mobile: params[:mobile])
+          return render_error(1004, "用户#{params[:mobile]}未注册") if user.blank?
+          
+          if user.authenticate(params[:password])
+            render_json(u, API::V1::Entities::User)
+          else
+            render_error(1005, "登录密码不正确")
           end
-          
-          # TODO: 验证码检测
-          
-          # 快捷登录
-          u = User.find_by(mobile: params[:mobile])
-          if u.blank?
-            u = User.create!(mobile: params[:mobile])
-          end
-          render_json(u, API::V1::Entities::User)
-          
         end # end post login
       end # end account resource
-      
-      # 三方快捷登录
-      resource :auth do
-        desc "三方认证快捷登录"
-        params do
-          requires :uid,        type: String, desc: "第三方登录用户唯一ID"
-          requires :provider,   type: String, desc: "第三方登录平台名称，例如：Wechat, QQ, Weibo等"
-          optional :nickname,   type: String, desc: "第三方登录用户的昵称"
-          optional :avatar_url, type: String, desc: "第三方登录用户的头像URL地址"
-        end
-        post :login do
-          provider = params[:provider].downcase
-          auth = Authorization.where('lower(provider) = ? and uid = ?', provider, params[:uid]).first
-          if auth.present?
-            return render_json(auth.user, API::V1::Entities::User, opts: auth)
-          end
-          
-          user = User.new
-          user.nickname = params[:nickname] if params[:nickname].present?
-          user.remote_avatar_url = params[:avatar_url] if params[:avatar_url].present?
-          user.authorizations << Authorization.new(provider: provider, uid: params[:uid])
-          
-          if user.save
-            # 添加认证
-            # Authorization.create!(provider: params[:provider], uid: params[:uid], user_id: user.id)
-            render_json(user, API::V1::Entities::User, opts: auth)
-          else
-            render_error(1006, user.errors.full_messages.join(','))
-          end
-        end # end end login
-        
-        desc "绑定手机号"
-        params do
-          # requires :token,  type: String, desc: "用户认证Token"
-          requires :uid,        type: String, desc: "第三方登录用户唯一ID"
-          requires :provider,   type: String, desc: "第三方登录平台名称，例如：Wechat, QQ, Weibo等"
-          requires :mobile, type: String, desc: "用户手机"
-          requires :code,   type: String, desc: "验证码"
-        end
-        post :bind do
-          # user = authenticate!
-          
-          # 手机号检测
-          unless check_mobile(params[:mobile])
-            return render_error(1001, "不正确的手机号")
-          end
-          
-          provider = params[:provider].downcase
-          
-          auth = Authorization.where('lower(provider) = ? and uid = ?', provider, params[:uid]).first
-          if auth.blank?
-            return render_error(1003, "不正确的uid或provider")
-          end
-          
-          auth_user = auth.user
-          
-          if auth_user.blank?
-            return render_error(1004, "非法用户")
-          end
-          
-          if auth_user.mobile.present?
-            return render_error(1005, "您已经绑定过手机")
-          end
-          
-          current_user = User.find_by(mobile: params[:mobile])
-          if current_user.present?
-            # 该手机号已经存在或者被绑定过
-            # 更新用户的个人资料
-            if current_user.nickname.blank?
-              current_user.nickname = auth_user.nickname
-            end
-            if current_user.avatar.blank?
-              current_user.avatar   = auth_user.avatar
-            end
-            current_user.save!
-            
-            # 绑定认证
-            auth.user_id = current_user.id
-            auth.save!
-            
-            # 软删除之前的三方认证账号
-            auth_user.update!({ visible: false })
-            
-            # 返回结果
-            render_json(current_user, API::V1::Entities::User)
-          else
-            # 该手机号不存在或者未被绑定过，直接将手机号绑定到登录账号
-            if auth_user.update_attribute(:mobile, params[:mobile])
-              render_json(auth_user, API::V1::Entities::User)
-            else
-              render_error(1006, user.errors.full_messages.join(','))
-            end
-          end
-          
-        end # end post bind
-        
-      end # end resource auth
       
       resource :user do
         
@@ -130,8 +52,7 @@ module API
           requires :token, type: String, desc: "用户认证Token"
         end
         get :me do
-          # user = authenticate!
-          user = User.find_by(private_token: params[:token])
+          user = authenticate!
           render_json(user, API::V1::Entities::User)
         end # end get me
         
@@ -150,7 +71,7 @@ module API
           if user.save
             render_json(user, API::V1::Entities::User)
           else
-            render_error(3001, user.errors.full_messages.join(","))
+            render_error(1006, user.errors.full_messages.join(","))
           end
         end # end update_avatar
         
@@ -169,9 +90,26 @@ module API
           if user.save
             render_json(user, API::V1::Entities::User)
           else
-            render_error(3002, user.errors.full_messages.join(","))
+            render_error(1006, user.errors.full_messages.join(","))
           end
         end # end update nickname
+        
+        desc "修改密码"
+        params do
+          requires :token,    type: String, desc: "用户认证Token, 必须"
+          requires :password, type: String, desc: "新的密码，必须"
+        end
+        post :update_password do
+          user = authenticate!
+          
+          return render_error(1003, '密码太短，至少为6位') if params[:password].length < 6
+          
+          user.password = params[:password]
+          user.password_confirmation = user.password
+          user.save!
+          
+          render_json_no_data
+        end # end update password
         
       end # end user resource
       
