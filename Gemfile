@@ -86,6 +86,9 @@ gem 'rest-client'
 gem 'unicorn'
 gem 'unicorn-worker-killer'
 
+# memcached
+gem 'dalli'
+
 # puma
 #gem 'puma'
 
