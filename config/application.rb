@@ -42,7 +42,7 @@ module CentralServices
     # config.encoding = "utf-8"
     config.encoding = "utf-8"
     
-    # config.middleware.use Rack::Deflater
+    config.middleware.use Rack::Deflater
     
     config.middleware.use Rack::Cors do
       allow do
