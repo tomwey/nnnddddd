@@ -56,6 +56,8 @@ module CentralServices
     # remove warnings
     config.active_record.raise_in_transactional_callbacks = true
     
+    config.cache_store = [:mem_cache_store, '127.0.0.1', { namespace: 'zgnx-1', compress: true }]
+    
     # 防止大量IP访问
     config.middleware.use Rack::Attack
     

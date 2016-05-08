@@ -5,6 +5,7 @@
       admin: "管理员"
       category: "类别"
       banner: "广告"
+      site_config: "站点配置"
     attributes:
       user:
         mobile: "手机"
@@ -16,6 +17,10 @@
         verified: "是否启用"
         private_token: "Token"
         created_at: "注册时间"
+      site_config:
+        key: "配置名称"
+        value: "配置值"
+        description: "配置说明"
       admin:
         email: "邮箱"
         password: "密码"
