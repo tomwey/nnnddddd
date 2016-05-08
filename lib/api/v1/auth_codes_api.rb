@@ -7,7 +7,7 @@ module API
         desc "生成验证码"
         params do
           requires :mobile, type: String, desc: "手机号，必须"
-          optoinal :code_length, type: Integer, desc: "验证码长度，4-6位，默认为4"
+          optional :code_length, type: Integer, desc: "验证码长度，4-6位，默认为4"
         end
         post do
           mobile = params[:mobile].to_s
