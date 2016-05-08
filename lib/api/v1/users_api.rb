@@ -8,6 +8,7 @@ module API
         params do
           requires :mobile,   type: String, desc: "用户手机号"
           requires :password, type: String, desc: "密码"
+          requires :code,     type: String, desc: "手机验证码"
         end
         post :signup do
           # 手机号检查
@@ -20,7 +21,17 @@ module API
           # 密码长度检查
           return render_error(1003, "密码太短，至少为6位") unless params[:password].length >= 6
           
+          # 检查验证码是否有效
+          auth_code = AuthCode.check_code_for(params[:mobile], params[:code])
+          return render_error(2004, '验证码无效') if auth_code.blank?
+          
+          # 注册
           user = User.create!(mobile: params[:mobile], password: params[:password], password_confirmation: params[:password])
+          
+          # 激活当前验证码
+          auth_code.update_attribute(:activated_at, Time.now)
+          
+          # 返回注册成功的用户
           render_json(user, API::V1::Entities::User)
         end # end post signup
         
@@ -98,15 +109,25 @@ module API
         params do
           requires :token,    type: String, desc: "用户认证Token, 必须"
           requires :password, type: String, desc: "新的密码，必须"
+          requires :code,     type: String, desc: "手机验证码，必须"
         end
         post :update_password do
           user = authenticate!
           
+          # 检查密码长度
           return render_error(1003, '密码太短，至少为6位') if params[:password].length < 6
           
+          # 检查验证码是否有效
+          auth_code = AuthCode.check_code_for(params[:mobile], params[:code])
+          return render_error(2004, '验证码无效') if auth_code.blank?
+          
+          # 更新密码
           user.password = params[:password]
           user.password_confirmation = user.password
           user.save!
+          
+          # 激活当前验证码
+          auth_code.update_attribute(:activated_at, Time.now)
           
           render_json_no_data
         end # end update password
