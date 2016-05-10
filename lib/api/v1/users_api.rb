@@ -49,7 +49,7 @@ module API
           return render_error(1004, "用户#{params[:mobile]}未注册") if user.blank?
           
           if user.authenticate(params[:password])
-            render_json(u, API::V1::Entities::User)
+            render_json(user, API::V1::Entities::User)
           else
             render_error(1005, "登录密码不正确")
           end
