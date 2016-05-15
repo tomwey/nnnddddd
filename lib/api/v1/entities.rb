@@ -20,6 +20,14 @@ module API
         end
       end
       
+      # Banner
+      class Banner < Base
+        expose :image do |model, opts|
+          model.image.blank? ? "" : model.image.url(:large)
+        end
+        expose :link, format_with: :null
+      end
+      
       # 类别详情
       class Category < Base
         expose :name, format_with: :null

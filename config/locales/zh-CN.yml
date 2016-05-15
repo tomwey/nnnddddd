@@ -6,6 +6,7 @@
       category: "类别"
       banner: "广告"
       site_config: "站点配置"
+      feedback: "意见反馈"
     attributes:
       user:
         mobile: "手机"
@@ -32,9 +33,11 @@
         sort: "显示顺序"
       banner:
         image: "广告图片"
-        title: "标题"
-        body: "内容"
-        category_id: "所属类别"
+        link: "链接"
+        sort: "显示顺序"
+      feedback:
+        author: "用户"
+        content: "反馈内容"
         
     errors:
       models:

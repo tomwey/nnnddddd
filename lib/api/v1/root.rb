@@ -7,13 +7,11 @@ module API
       helpers API::SharedParams
       
       mount API::V1::Welcome
+      mount API::V1::FeedbacksAPI
       mount API::V1::CategoriesAPI
       mount API::V1::AuthCodesAPI
       mount API::V1::UsersAPI
-      # mount API::V1::CategoriesAPI
-      # mount API::V1::ProductsAPI
-      # 
-      # mount API::V1::WechatAuthAPI
+      mount API::V1::BannersAPI
       # 
       # 配合trix文本编辑器
       # mount API::V1::AttachmentsAPI
