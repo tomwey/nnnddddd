@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ActiveRecord::Base  
   has_secure_password
   
   validates :mobile, :password, :password_confirmation, presence: true, on: :create
@@ -59,12 +59,13 @@ class User < ActiveRecord::Base
   end
   
   # 设置支付密码
-  def pay_password=(password)
-    self.pay_password_digest = BCrypt::Password.create(password) if self.pay_password_digest.blank?
-  end
+  # def pay_password=(password)
+  #   self.pay_password_digest = BCrypt::Password.create(password) if self.pay_password_digest.blank?
+  # end
   
   # 更新支付密码
   def update_pay_password!(password)
+    return false if password.blank?
     self.pay_password_digest = BCrypt::Password.create(password)
     self.save!
   end
