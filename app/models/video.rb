@@ -3,6 +3,7 @@ class Video < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :category
+  has_many :likes, as: :likeable
   
   mount_uploader :file, VideoUploader
   

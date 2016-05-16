@@ -131,7 +131,6 @@ module API
           
           render_json_no_data
         end # end update password
-        
       end # end user resource
       
     end 

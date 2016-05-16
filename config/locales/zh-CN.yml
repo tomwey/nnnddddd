@@ -8,6 +8,7 @@
       site_config: "站点配置"
       feedback: "意见反馈"
       video: "视频"
+      like: "用户收藏"
     attributes:
       user:
         mobile: "手机"
@@ -47,6 +48,8 @@
         view_count: "围观人数"
         likes_count: "收藏数"
         sort: "显示顺序"
+      like:
+        likeable_id: '被收藏的视频'
         
     errors:
       models:

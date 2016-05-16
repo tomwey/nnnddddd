@@ -6,6 +6,9 @@ class User < ActiveRecord::Base
             
   mount_uploader :avatar, AvatarUploader
   
+  has_many :likes, dependent: :destroy
+  has_many :liked_videos, through: :likes, source: :likeable, source_type: 'Video'
+  
   scope :no_delete, -> { where(visible: true) }
   scope :verified,  -> { where(verified: true) }
   
@@ -32,6 +35,27 @@ class User < ActiveRecord::Base
   def unblock!
     self.verified = true
     self.save!
+  end
+  
+  # 是否已经like
+  def liked?(likeable)
+    return false if likeable.blank?
+    count = likes.where(likeable_type: likeable.class, likeable_id: likeable.id).count
+    count > 0
+  end
+  
+  # like
+  def like!(likeable)
+    return false if likeable.blank?
+    Like.create!(user_id: self.id, likeable_id: likeable.id, likeable_type: likeable.class)
+  end
+  
+  # cancel like
+  def cancel_like!(likeable)
+    return false if likeable.blank?
+    like = likes.where(likeable_type: likeable.class, likeable_id: likeable.id).first
+    return false if like.blank?
+    like.destroy
   end
   
 end
