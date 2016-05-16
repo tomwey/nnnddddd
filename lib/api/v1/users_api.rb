@@ -118,7 +118,7 @@ module API
           return render_error(1003, '密码太短，至少为6位') if params[:password].length < 6
           
           # 检查验证码是否有效
-          auth_code = AuthCode.check_code_for(params[:mobile], params[:code])
+          auth_code = AuthCode.check_code_for(user.mobile, params[:code])
           return render_error(2004, '验证码无效') if auth_code.blank?
           
           # 更新密码
