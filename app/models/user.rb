@@ -58,4 +58,20 @@ class User < ActiveRecord::Base
     like.destroy
   end
   
+  # 设置支付密码
+  def pay_password=(password)
+    self.pay_password_digest = BCrypt::Password.create(password) if self.pay_password_digest.blank?
+  end
+  
+  # 更新支付密码
+  def update_pay_password!(password)
+    self.pay_password_digest = BCrypt::Password.create(password)
+    self.save!
+  end
+  
+  # 检查支付密码是否正确
+  def is_pay_password?(password)
+    BCrypt::Password.new(self.pay_password_digest) == password
+  end
+  
 end
