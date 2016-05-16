@@ -51,6 +51,10 @@ gem 'mini_magick'#,'~> 4.2.7'#, require: false
 # 解决大文件上传报内存问题：Cannot allocate memory - identify
 gem 'posix-spawn'
 
+# 上传视频
+gem 'carrierwave-video'
+gem 'carrierwave-video-thumbnailer'
+
 # Bootstrap UI
 gem 'bootstrap-sass', '~> 3.2.0'
 

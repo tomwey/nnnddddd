@@ -12,6 +12,7 @@ module API
       mount API::V1::AuthCodesAPI
       mount API::V1::UsersAPI
       mount API::V1::BannersAPI
+      mount API::V1::VideosAPI
       # 
       # 配合trix文本编辑器
       # mount API::V1::AttachmentsAPI

@@ -3,14 +3,14 @@ module API
     module Entities
       class Base < Grape::Entity
         format_with(:null) { |v| v.blank? ? "" : v }
+        format_with(:chinese_date) { |v| v.blank? ? "" : v.strftime('%Y-%m-%d') }
         format_with(:chinese_datetime) { |v| v.blank? ? "" : v.strftime('%Y-%m-%d %H:%M:%S') }
         expose :id
         # expose :created_at, format_with: :chinese_datetime
       end # end Base
       
-      # 用户详情
-      class User < Base
-        expose :private_token, as: :token, format_with: :null
+      # 用户基本信息
+      class UserProfile < Base
         expose :mobile, format_with: :null
         expose :nickname do |model, opts|
           model.nickname || model.mobile
@@ -20,12 +20,9 @@ module API
         end
       end
       
-      # Banner
-      class Banner < Base
-        expose :image do |model, opts|
-          model.image.blank? ? "" : model.image.url(:large)
-        end
-        expose :link, format_with: :null
+      # 用户详情
+      class User < UserProfile
+        expose :private_token, as: :token, format_with: :null
       end
       
       # 类别详情
@@ -34,6 +31,31 @@ module API
         expose :icon do |model, opts|
           model.icon.blank? ? "" : model.icon.url(:icon)
          end
+      end
+      
+      # 点播视频
+      class Video < Base
+        expose :title, format_with: :null
+        expose :video_file do |model, opts|
+          model.file.blank? ? "" : model.file.url(:mp4)
+        end
+        expose :cover_image do |model, opts|
+          model.file.blank? ? "" : model.file.url(:cover_image)
+        end
+        expose :view_count, :likes_count
+        expose :created_on do |model, opts|
+          model.created_at.blank? ? "" : model.created_at.strftime('%Y-%m-%d')
+        end
+        expose :category, using: API::V1::Entities::Category
+        expose :user,     using: API::V1::Entities::UserProfile, if: Proc.new { |video| video.user_id > 0 }
+      end
+      
+      # Banner
+      class Banner < Base
+        expose :image do |model, opts|
+          model.image.blank? ? "" : model.image.url(:large)
+        end
+        expose :link, format_with: :null
       end
       
       # 产品

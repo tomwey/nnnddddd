@@ -7,6 +7,7 @@
       banner: "广告"
       site_config: "站点配置"
       feedback: "意见反馈"
+      video: "视频"
     attributes:
       user:
         mobile: "手机"
@@ -38,6 +39,14 @@
       feedback:
         author: "用户"
         content: "反馈内容"
+      video:
+        title: "视频标题"
+        file: "视频文件"
+        user_id: "所属用户"
+        category_id: "所属类别"
+        view_count: "围观人数"
+        likes_count: "收藏数"
+        sort: "显示顺序"
         
     errors:
       models:
