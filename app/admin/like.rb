@@ -12,7 +12,7 @@ ActiveAdmin.register Like do
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
-filter :likeable_id, as: :select, collection: Video.all.map { |video| [video.title, video.id] }
+# filter :likeable_id, as: :select, collection: Video.all.map { |video| [video.title, video.id] }
 
 actions :all, except: [:show, :new, :create, :edit, :update, :destroy]
 
