@@ -73,6 +73,9 @@ gem 'newrelic-grape'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-utf8_sanitizer'
 
+# 富文本编辑器
+gem 'redactor-rails'
+
 # API doc
 gem 'grape-swagger'
 gem 'grape-swagger-rails'

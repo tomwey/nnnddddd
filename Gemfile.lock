@@ -265,6 +265,10 @@ GEM
       polyamorous (~> 1.2)
     rdoc (4.2.2)
       json (~> 1.4)
+    redactor-rails (0.4.5)
+      devise
+      mime-types
+      orm_adapter
     redis (3.3.0)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
@@ -374,6 +378,7 @@ DEPENDENCIES
   rack-cors
   rack-utf8_sanitizer
   rails (= 4.2.4)
+  redactor-rails
   redis
   redis-namespace
   redis-objects
@@ -391,6 +396,3 @@ DEPENDENCIES
   unicorn-worker-killer
   will_paginate
   will_paginate-bootstrap
-
-BUNDLED WITH
-   1.11.2
