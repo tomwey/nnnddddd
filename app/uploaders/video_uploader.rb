@@ -11,13 +11,20 @@ class VideoUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
   
-  def extension_white_list
-    %w(mp4 mov)
+  def filename
+    if super.present?
+      "#{secure_token}.#{file.extension}"
+    end
   end
   
-  process encode_video: [:mp4, resolution: "640x480"]
+  def extension_white_list
+    %w(mp4 mov avi 3gp mpeg)
+  end
+  
+  # process encode_video: [:mp4, custom: "-preset medium -pix_fmt yuv420p"]
   
   version :mp4 do
+    process :encode_video=> [:mp4, audio_codec: "aac", :custom => "-strict experimental -q:v 5 -preset slow -g 30"]
     def full_filename(for_file)
       super.chomp(File.extname(super)) + '.mp4'
     end
@@ -33,5 +40,11 @@ class VideoUploader < CarrierWave::Uploader::Base
   def jpg_name for_file, version_name
     %Q{#{version_name}_#{for_file.chomp(File.extname(for_file))}.jpg}
   end
+  
+  protected
+    def secure_token
+      var = :"@#{mounted_as}_secure_token"
+      model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
+    end
   
 end
