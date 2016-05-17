@@ -37,7 +37,7 @@ module API
       class Video < Base
         expose :title, format_with: :null
         expose :video_file do |model, opts|
-          model.file.blank? ? "" : model.file.url(:mp4)
+          model.file.blank? ? "" : model.file.url#model.file.url(:mp4)
         end
         expose :cover_image do |model, opts|
           model.file.blank? ? "" : model.file.url(:cover_image)

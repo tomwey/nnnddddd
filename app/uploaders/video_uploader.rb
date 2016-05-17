@@ -22,9 +22,11 @@ class VideoUploader < CarrierWave::Uploader::Base
   end
   
   # process encode_video: [:mp4, custom: "-preset medium -pix_fmt yuv420p"]
+  # :custom => "-strict experimental -q:v 5 -preset slow -g 30"
+  # process :encode_video=> [:mp4, audio_codec: "aac", resolution: :same, video_bitrate: :same]
   
   version :mp4 do
-    process :encode_video=> [:mp4, audio_codec: "aac", :custom => "-strict experimental -q:v 5 -preset slow -g 30"]
+    process :encode_video=> [:mp4, audio_codec: "aac", resolution: :same, video_bitrate: :same]
     def full_filename(for_file)
       super.chomp(File.extname(super)) + '.mp4'
     end
