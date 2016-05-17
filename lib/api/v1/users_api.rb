@@ -131,6 +131,31 @@ module API
           
           render_json_no_data
         end # end update password
+        
+        desc "更新支付密码"
+        params do
+          requires :token,        type: String, desc: "用户认证Token, 必须"
+          requires :code,         type: String, desc: "手机验证码，必须"
+          requires :pay_password, type: String, desc: "支付密码，必须"
+        end
+        post :update_pay_password do
+          user = authenticate!
+          
+          # 检查验证码是否有效
+          auth_code = AuthCode.check_code_for(user.mobile, params[:code])
+          return render_error(2004, '验证码无效') if auth_code.blank?
+          
+          # 检查密码长度
+          return render_error(1003, '密码太短，至少为6位') if params[:pay_password].length < 6
+          
+          if user.update_pay_password!(params[:pay_password])
+            render_json_no_data
+          else
+            render_error(3003, "设置支付密码失败")
+          end
+          
+        end # end update pay_password
+        
       end # end user resource
       
     end 
