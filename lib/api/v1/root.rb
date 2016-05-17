@@ -6,7 +6,7 @@ module API
       helpers API::CommHelpers
       helpers API::SharedParams
       
-      mount API::V1::Welcome
+      # mount API::V1::Welcome
       mount API::V1::FeedbacksAPI
       mount API::V1::CategoriesAPI
       mount API::V1::AuthCodesAPI
