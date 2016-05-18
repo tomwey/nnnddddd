@@ -46,7 +46,7 @@ gem 'activeadmin', github: 'activeadmin'
 gem 'pg'
 
 # 上传组件
-gem 'carrierwave'#, '~> 0.10.0'
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'mini_magick'#,'~> 4.2.7'#, require: false
 # 解决大文件上传报内存问题：Cannot allocate memory - identify
 gem 'posix-spawn'

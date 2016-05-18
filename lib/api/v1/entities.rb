@@ -50,6 +50,18 @@ module API
         expose :user,     using: API::V1::Entities::UserProfile, if: Proc.new { |video| video.user_id > 0 }
       end
       
+      class LiveVideo < Base
+        expose :title, format_with: :null
+        expose :cover_image do |model, opts|
+          model.images.first.url(:thumb)
+        end
+        expose :live_time do |model, opts|
+          model.lived_at.strftime('%Y-%m-%d %H:%M:%S')
+        end
+        expose :view_count
+        expose :channel_id, format_with: :null
+      end
+      
       # Banner
       class Banner < Base
         expose :image do |model, opts|

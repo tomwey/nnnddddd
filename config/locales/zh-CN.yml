@@ -9,6 +9,7 @@
       feedback: "意见反馈"
       video: "视频"
       like: "用户收藏"
+      live_video: "直播"
     attributes:
       user:
         mobile: "手机"
@@ -50,6 +51,17 @@
         sort: "显示顺序"
       like:
         likeable_id: '被收藏的视频'
+      live_video:
+        title: '节目名称'
+        body: '节目描述'
+        images: '活动现场图片'
+        lived_at: '直播时间'
+        live_address: '直播地点'
+        rtmp_push_url: '直播推流地址'
+        rtmp_pull_url: 'RTMP直播地址'
+        hls_pull_url: 'HLS直播地址'
+        channel_id: '直播频道ID'
+        closed: '直播是否开启'
         
     errors:
       models:
