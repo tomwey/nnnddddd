@@ -5,12 +5,12 @@ module API
       resource :live do
         desc "获取直播频道列表"
         get :channels do
-          @videos = LiveVideo.fields_for_list.opened.recent
+          @videos = LiveVideo.opened.recent
           render_json(@videos, API::V1::Entities::LiveVideo)
         end
         desc "获取最新的直播频道"
         get :latest_channel do
-          @video = LiveVideo.fields_for_list.opened.recent.first
+          @video = LiveVideo.opened.recent.first
           render_json(@video, API::V1::Entities::LiveVideo)
         end
       end # end resource

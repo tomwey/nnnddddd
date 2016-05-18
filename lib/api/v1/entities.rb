@@ -58,8 +58,23 @@ module API
         expose :live_time do |model, opts|
           model.lived_at.strftime('%Y-%m-%d %H:%M:%S')
         end
+        expose :live_address, format_with: :null
+        expose :body, format_with: :null
         expose :view_count
         expose :channel_id, format_with: :null
+        expose :rtmp_url do |model, opts|
+          model.rtmp_pull_url
+        end
+        expose :hls_url do |model, opts|
+          model.hls_pull_url
+        end
+        expose :images do |model, opts|
+          images = []
+          model.images.each do |image|
+            images << image.url(:large)
+          end
+          images
+        end
       end
       
       # Banner
