@@ -39,7 +39,14 @@ index do
     live_video.closed ? "关闭" : "开启"
   end
   
-  actions
+  actions defaults: false do |channel|
+    if channel.closed
+      item '开启', open_admin_live_video_path(channel), method: :put
+    else
+      item '关闭', close_admin_live_video_path(channel), method: :put
+    end
+    item " 编辑", edit_admin_live_video_path(channel)
+  end
   # actions defaults: false do |product|
   #   item "编辑", edit_admin_product_path(product)
   #   if product.on_sale
@@ -49,6 +56,32 @@ index do
   #   end
   # end
   
+end
+
+# 批量开启
+batch_action :open do |ids|
+  batch_action_collection.find(ids).each do |channel|
+    channel.open!
+  end
+  redirect_to collection_path, alert: '开启成功'
+end
+
+# 批量关闭
+batch_action :close do |ids|
+  batch_action_collection.find(ids).each do |channel|
+    channel.close!
+  end
+  redirect_to collection_path, alert: '关闭成功'
+end
+
+member_action :open, method: :put do
+  resource.open!
+  redirect_to collection_path, notice: "已开启"
+end
+
+member_action :close, method: :put do
+  resource.close!
+  redirect_to collection_path, notice: "已关闭"
 end
 
 form html: { multipart: true } do |f|

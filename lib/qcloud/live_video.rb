@@ -3,6 +3,7 @@ require 'openssl'
 require 'base64'
 module Qcloud
   class LiveVideo
+    # 创建直播
     def self.create_channel(live_video)
       return false if live_video.blank?
       # params = {
@@ -39,12 +40,41 @@ module Qcloud
 
     end
     
+    # 获取直播详情
     def self.fetch_channel_detail(channel_id)
       params = {
         'Action'    => 'DescribeLVBChannel',
         'channelId' => channel_id.to_i,
       }
       self.send_request('GET', Setting.qcloud_live_api, params)
+    end
+    
+    # 批量开启直播
+    def self.open_channels(channel_ids)
+      return false if channel_ids.blank? or channel_ids.empty?
+      params = {
+        'Action' => 'StartLVBChannel',
+      }
+      channel_ids.each_with_index do |channel_id, index|
+        params["channelIds.#{index+1}"] = channel_id
+      end
+      
+      result = self.send_request('GET', Setting.qcloud_live_api, params)
+      return result['code'].to_i == 0
+    end
+    
+    # 批量关闭直播
+    def self.close_channels(channel_ids)
+      return false if channel_ids.blank? or channel_ids.empty?
+      params = {
+        'Action' => 'StopLVBChannel',
+      }
+      channel_ids.each_with_index do |channel_id, index|
+        params["channelIds.#{index+1}"] = channel_id
+      end
+      
+      result = self.send_request('GET', Setting.qcloud_live_api, params)
+      return result['code'].to_i == 0
     end
     
     protected

@@ -36,6 +36,7 @@ class LiveVideo < ActiveRecord::Base
       end
       self.channel_id = channel_id
       self.save!
+      self.close!
     else
       puts '创建频道失败'
       return false
@@ -45,8 +46,18 @@ class LiveVideo < ActiveRecord::Base
   
   # 启动直播
   def open!
-    self.closed = false
-    self.save!
+    if Qcloud::LiveVideo.open_channels(["#{self.channel_id}"])
+      self.closed = false
+      self.save!
+    end
+  end
+  
+  # 关闭直播
+  def close!
+    if Qcloud::LiveVideo.close_channels(["#{self.channel_id}"])
+      self.closed = true
+      self.save!
+    end
   end
   
 end
