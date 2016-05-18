@@ -1,5 +1,6 @@
 ActiveAdmin.register Category do
 
+menu priority: 3, label: '类别'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #

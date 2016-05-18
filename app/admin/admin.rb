@@ -1,4 +1,7 @@
 ActiveAdmin.register Admin do
+  
+  menu priority: 100, label: '管理员'
+  
   permit_params :email, :password, :password_confirmation
 
   index do
