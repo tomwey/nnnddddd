@@ -10,4 +10,13 @@ class Video < ActiveRecord::Base
   scope :sorted, -> { order('sort desc') }
   scope :recent, -> { order('id desc') }
   scope :hot,    -> { order('view_count desc') }
+  
+  before_create :generate_stream_id
+  def generate_stream_id
+    self.stream_id = SecureRandom.uuid.gsub('-', '') if self.stream_id.blank?
+  end
+  
+  def type
+    2
+  end
 end

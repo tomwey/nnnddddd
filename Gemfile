@@ -96,6 +96,9 @@ gem 'unicorn-worker-killer'
 # memcached
 gem 'dalli'
 
+# 状态机
+gem 'state_machine'
+
 # puma
 #gem 'puma'
 

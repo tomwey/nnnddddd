@@ -5,7 +5,7 @@ menu priority: 5, label: '视频'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :title, :file, :category_id
+permit_params :title, :file, :category_id, :stream_id
 #
 # or
 #
@@ -24,6 +24,9 @@ index do
       <source src=\"#{video.file.url(:mp4)}\" type=\"video/mp4\">
       Your browser doesn't support HTML5 video tag.
     </video>")
+  end
+  column '视频流ID', sortable: false do |video|
+    video.stream_id
   end
   column :view_count
   column :likes_count

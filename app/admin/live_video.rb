@@ -5,7 +5,7 @@ menu priority: 4, label: '直播'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :title, :body, :lived_at, :live_address, { images: [] }, :rtmp_push_url, :rtmp_pull_url, :hls_pull_url
+permit_params :title, :body, :lived_at, :live_address, { images: [] }, :stream_id
 #
 # or
 #
@@ -31,19 +31,25 @@ index do
       end
     end
   end
+  column '直播流ID', sortable: false do |lv|
+    lv.stream_id
+  end
   column '直播相关', sortable: false do |live_video|
-    raw("RTMP推流地址：#{live_video.rtmp_push_url}<br>RTMP直播地址：#{live_video.rtmp_pull_url}<br>HLS直播地址：#{live_video.hls_pull_url}")
+    raw("RTMP推流地址：#{live_video.rtmp_push_url}<br>
+         RTMP直播地址：#{live_video.rtmp_url}<br>
+         HLS直播地址： #{live_video.hls_url}<br>
+         视频录制地址： #{live_video.vod_url}")
   end
   
-  column '直播是否开启', sortable: false do |live_video|
-    live_video.closed ? "关闭" : "开启"
+  column '直播状态', sortable: false do |live_video|
+    live_video.try(:state_info)
   end
   
   actions defaults: false do |channel|
-    if channel.closed
-      item '开启', open_admin_live_video_path(channel), method: :put
-    else
-      item '关闭', close_admin_live_video_path(channel), method: :put
+    if channel.can_live?
+      item '开始直播', open_admin_live_video_path(channel), method: :put
+    elsif channel.can_close?
+      item '关闭直播', close_admin_live_video_path(channel), method: :put
     end
     item " 编辑", edit_admin_live_video_path(channel)
   end

@@ -42,7 +42,7 @@ module API
         expose :cover_image do |model, opts|
           model.file.blank? ? "" : model.file.url(:cover_image)
         end
-        expose :view_count, :likes_count
+        expose :view_count, :likes_count, :type
         expose :created_on do |model, opts|
           model.created_at.blank? ? "" : model.created_at.strftime('%Y-%m-%d')
         end
@@ -50,31 +50,27 @@ module API
         expose :user,     using: API::V1::Entities::UserProfile, if: Proc.new { |video| video.user_id > 0 }
       end
       
-      class LiveVideo < Base
-        expose :title, format_with: :null
-        expose :cover_image do |model, opts|
-          model.images.first.url(:thumb)
-        end
-        expose :live_time do |model, opts|
-          model.lived_at.strftime('%Y-%m-%d %H:%M:%S')
-        end
+      class LiveHotVideo < Base
+        expose :title,       format_with: :null
+        expose :cover_image, format_with: :null
+        expose :live_time,   format_with: :null
         expose :live_address, format_with: :null
-        expose :body, format_with: :null
-        expose :view_count
-        expose :channel_id, format_with: :null
-        expose :rtmp_url do |model, opts|
-          model.rtmp_pull_url
+        expose :body,         format_with: :null
+        expose :stream_id, format_with: :null
+        expose :view_count, :vod_url, :detail_images
+        expose :type do |model, opts|
+          2
         end
-        expose :hls_url do |model, opts|
-          model.hls_pull_url
-        end
-        expose :images do |model, opts|
-          images = []
-          model.images.each do |image|
-            images << image.url(:large)
-          end
-          images
-        end
+      end
+      
+      class LiveVideo < Base
+        expose :title,       format_with: :null
+        expose :cover_image, format_with: :null
+        expose :live_time,   format_with: :null
+        expose :live_address, format_with: :null
+        expose :body,         format_with: :null
+        expose :stream_id, format_with: :null
+        expose :view_count, :rtmp_url, :hls_url, :type, :detail_images
       end
       
       # Banner

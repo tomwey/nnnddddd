@@ -10,6 +10,7 @@
       video: "视频"
       like: "用户收藏"
       live_video: "直播"
+      live_provider: "直播提供者"
     attributes:
       user:
         mobile: "手机"
@@ -62,6 +63,11 @@
         hls_pull_url: 'HLS直播地址'
         channel_id: '直播频道ID'
         closed: '直播是否开启'
+      live_provider:
+        rtmp_push_url: '推流域名'
+        rtmp_pull_url: 'RTMP播放域名'
+        hls_pull_url:  'HLS播放域名'
+        resolution:    '码率'
         
     errors:
       models:

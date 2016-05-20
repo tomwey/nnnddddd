@@ -1,0 +1,12 @@
+class CreateLiveProviders < ActiveRecord::Migration
+  def change
+    create_table :live_providers do |t|
+      t.string :rtmp_push_url, null: false
+      t.string :rtmp_pull_url
+      t.string :hls_pull_url
+      t.string :resolution
+
+      t.timestamps null: false
+    end
+  end
+end
