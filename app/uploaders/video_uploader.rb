@@ -2,7 +2,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   include CarrierWave::Video
   include CarrierWave::Video::Thumbnailer
   
-  storage :file
+  storage :qiniu
   # storage :fog
 
   # Override the directory where uploaded files will be stored.
@@ -25,12 +25,12 @@ class VideoUploader < CarrierWave::Uploader::Base
   # :custom => "-strict experimental -q:v 5 -preset slow -g 30"
   # process :encode_video=> [:mp4, audio_codec: "aac", resolution: :same, video_bitrate: :same]
   
-  version :mp4 do
-    process :encode_video=> [:mp4, audio_codec: "aac", resolution: :same, video_bitrate: :same]
-    def full_filename(for_file)
-      super.chomp(File.extname(super)) + '.mp4'
-    end
-  end
+  # version :mp4 do
+  #   process :encode_video=> [:mp4, audio_codec: "aac", resolution: :same, video_bitrate: :same]
+  #   def full_filename(for_file)
+  #     super.chomp(File.extname(super)) + '.mp4'
+  #   end
+  # end
   
   version :cover_image do
     process thumbnail: [{format: 'jpg', quality: 10, size: 192, strip: false, logger: Rails.logger}]

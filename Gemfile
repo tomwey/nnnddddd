@@ -54,6 +54,7 @@ gem 'posix-spawn'
 # 上传视频
 gem 'carrierwave-video'
 gem 'carrierwave-video-thumbnailer'
+gem 'carrierwave-qiniu', '0.2.3'
 
 # Bootstrap UI
 gem 'bootstrap-sass', '~> 3.2.0'
