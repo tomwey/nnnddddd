@@ -41,6 +41,7 @@ gem 'redis-objects'
 
 # 后台管理系统
 gem 'activeadmin', github: 'activeadmin'
+# gem 'activeadmin', github: 'gregbell/active_admin', branch: '0-6-stable'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
