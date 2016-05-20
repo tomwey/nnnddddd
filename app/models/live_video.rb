@@ -93,6 +93,10 @@ class LiveVideo < ActiveRecord::Base
     # end
   end
   
+  def increamt_online_user(n)
+    # TODO
+  end
+  
   # ------------------------------------------------------------------------------- #
   # 返回视频流类型
   def type
