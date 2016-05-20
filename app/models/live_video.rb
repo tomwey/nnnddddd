@@ -23,6 +23,7 @@ class LiveVideo < ActiveRecord::Base
   end
   
   def state_info
+    return '' if state.blank?
     case self.state.to_sym
     when :pending then '未开始'
     when :living  then '直播中'

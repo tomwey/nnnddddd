@@ -1,7 +1,9 @@
 # encoding: utf-8
 require 'digest/md5'
 class ImagesUploader < BaseUploader
-
+  
+  storage :qiniu
+  
   process resize_to_limit: [1280, nil]
   
   version :large do
