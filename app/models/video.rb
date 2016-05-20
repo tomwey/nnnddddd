@@ -10,6 +10,8 @@ class Video < ActiveRecord::Base
   scope :sorted, -> { order('sort desc') }
   scope :recent, -> { order('id desc') }
   scope :hot,    -> { order('view_count desc') }
+  scope :from_live, -> { where(from_live: true) }
+  scope :no_from_live, -> { where(from_live: false) }
   
   before_create :generate_stream_id
   def generate_stream_id

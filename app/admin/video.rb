@@ -5,7 +5,7 @@ menu priority: 5, label: '视频'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :title, :file, :category_id, :stream_id
+permit_params :title, :file, :category_id, :stream_id, :from_live
 #
 # or
 #
@@ -33,6 +33,9 @@ index do
   column '所属类别', sortable: false do |video|
     video.category.try(:name)
   end
+  column '是否来自直播录制视频', sortable: false do |video|
+    video.from_live ? "是" : "否"
+  end
   column '所属用户', sortable: false do |video|
     video.user_id == -1 ? '系统' : video.user.try(:nickname)
   end
@@ -59,6 +62,7 @@ form html: { multipart: true } do |f|
     f.input :title
     f.input :file, as: :file, hint: '上传视频文件，格式为：mp4或mov'
     f.input :sort, hint: '视频显示顺序，值越大，显示越靠前'
+    f.input :from_live#, hint: '是否该视频来源于直播录制'
   end 
   
   actions

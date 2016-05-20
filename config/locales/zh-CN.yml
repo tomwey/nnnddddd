@@ -50,6 +50,7 @@
         view_count: "围观人数"
         likes_count: "收藏数"
         sort: "显示顺序"
+        from_live: "是否来自直播录制视频"
       like:
         likeable_id: '被收藏的视频'
       live_video:

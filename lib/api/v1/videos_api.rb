@@ -11,7 +11,7 @@ module API
           use :pagination
         end
         get do
-          @videos = Video.sorted.hot.recent
+          @videos = Video.no_from_live.sorted.hot.recent
           
           if params[:cid]
             @videos = @videos.where(category_id: params[:cid])

@@ -34,7 +34,7 @@ module API
       end
       
       # 点播视频
-      class Video < Base
+      class SimpleVideo < Base
         expose :title, format_with: :null
         expose :video_file do |model, opts|
           model.file.blank? ? "" : model.file.url#model.file.url(:mp4)
@@ -46,6 +46,9 @@ module API
         expose :created_on do |model, opts|
           model.created_at.blank? ? "" : model.created_at.strftime('%Y-%m-%d')
         end
+      end
+      
+      class Video < SimpleVideo
         expose :category, using: API::V1::Entities::Category
         expose :user,     using: API::V1::Entities::UserProfile, if: Proc.new { |video| video.user_id > 0 }
       end

@@ -2,6 +2,8 @@ module API
   module V1
     class LiveAPI < Grape::API
       
+      helpers API::SharedParams
+      
       resource :live do
         desc "获取直播列表"
         get :channels do
@@ -16,9 +18,13 @@ module API
         end
         
         desc "获取热门直播"
+        params do
+          use :pagination
+        end
         get :hot_videos do
-          @videos = LiveVideo.closed.recent
-          render_json(@videos, API::V1::Entities::LiveHotVideo)
+          @videos = Video.from_live.sorted.hot.recent
+          @videos = @videos.paginate(page: params[:page], per_page: page_size) if params[:page]
+          render_json(@videos, API::V1::Entities::SimpleVideo)
         end # end get
       end # end resource
       
