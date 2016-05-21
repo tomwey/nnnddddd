@@ -4,6 +4,7 @@ ActiveAdmin.register Admin do
   
   permit_params :email, :password, :password_confirmation
 
+  actions :all, except: [:edit, :update, :destroy, :show]
   index do
     selectable_column
     id_column
