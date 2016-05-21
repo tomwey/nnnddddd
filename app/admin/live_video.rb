@@ -34,8 +34,9 @@ index do
   column '直播流ID', sortable: false do |lv|
     lv.stream_id
   end
-  column '围观人数' do |lv|
-    lv.online_users_count
+  column '人数统计' do |lv|
+    # lv.online_users_count
+    raw("围观人数：#{lv.view_count}<br>在线人数：#{lv.online_users_count}")
   end
   column '直播相关', columns: 3, sortable: false do |live_video|
     raw("RTMP推流地址：#{live_video.rtmp_push_url}<br>

@@ -92,6 +92,7 @@ class LiveVideo < ActiveRecord::Base
     #   self.closed = true
     #   self.save!
     # end
+    $redis.del(stream_id)
   end
   
   def update_online_user_count(n)
@@ -107,6 +108,11 @@ class LiveVideo < ActiveRecord::Base
     
     # 通知消息
     $mqtt.publish(stream_id, $redis.get(stream_id))
+    
+    # 每新增10个用户存一次数据库
+    if count - self.view_count > 10
+      self.update_attribute(:view_count, count)
+    end
     
   end
   
