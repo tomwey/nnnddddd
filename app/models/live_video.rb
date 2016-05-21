@@ -117,7 +117,7 @@ class LiveVideo < ActiveRecord::Base
   end
   
   def online_users_count
-    $redis.get(stream_id) || self.view_count
+    ($redis.get(stream_id) || self.view_count).to_i
   end
   
   # ------------------------------------------------------------------------------- #
