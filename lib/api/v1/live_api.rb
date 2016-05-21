@@ -4,7 +4,7 @@ module API
       
       helpers API::SharedParams
       
-      resource :live do
+      resource :live, desc: '直播相关接口' do
         desc "获取直播列表"
         get :channels do
           @videos = LiveVideo.living.recent
@@ -29,7 +29,7 @@ module API
       end # end resource
       
       # 统计信息
-      resource :stat do
+      resource :stat, desc: '直播、点播统计接口' do
         desc "播放统计"
         params do
           requires :sid,  type: String,  desc: "视频流ID, 值为服务器返回的stream_id字段的值"

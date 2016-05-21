@@ -15,6 +15,7 @@ module API
       mount API::V1::VideosAPI
       mount API::V1::LikesAPI
       mount API::V1::LiveAPI
+      mount API::V1::BilibilisAPI
       # 
       # 配合trix文本编辑器
       # mount API::V1::AttachmentsAPI

@@ -2,7 +2,7 @@ module API
   module V1
     class UsersAPI < Grape::API
       # 用户账号管理
-      resource :account do
+      resource :account, desc: "注册登录接口" do
         
         desc "用户注册"
         params do
@@ -56,7 +56,7 @@ module API
         end # end post login
       end # end account resource
       
-      resource :user do
+      resource :user, desc: "用户接口" do
         
         desc "获取个人资料"
         params do

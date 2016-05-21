@@ -3,7 +3,7 @@ module API
   module V1
     class AuthCodesAPI < Grape::API
       
-      resource :auth_codes do
+      resource :auth_codes, desc: "验证码接口" do
         desc "生成验证码"
         params do
           requires :mobile, type: String, desc: "手机号，必须"

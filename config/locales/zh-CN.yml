@@ -11,6 +11,7 @@
       like: "用户收藏"
       live_video: "直播"
       live_provider: "直播提供者"
+      bilibili: '弹幕'
     attributes:
       user:
         mobile: "手机"
@@ -69,6 +70,12 @@
         rtmp_pull_url: 'RTMP播放域名'
         hls_pull_url:  'HLS播放域名'
         resolution:    '码率'
+      bilibili:
+        content: '内容'
+        stream_id: '视频ID'
+        created_at: '发布时间'
+        location: '作者位置'
+        author_id: '作者'
         
     errors:
       models:

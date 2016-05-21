@@ -4,7 +4,7 @@ module API
       
       helpers API::SharedParams
       
-      resource :videos do
+      resource :videos, desc: '视频推荐接口' do
         desc "获取推荐视频列表"
         params do
           optional :cid, type: Integer, desc: "类别ID, 如果不传该参数，默认返回所有的视频"

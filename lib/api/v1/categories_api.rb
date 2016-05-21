@@ -2,7 +2,7 @@ module API
   module V1
     class CategoriesAPI < Grape::API
       
-      resource :types do
+      resource :types, desc: '类别接口' do
         desc "获取所有的类别"
         get do
           @types = Category.sorted.recent

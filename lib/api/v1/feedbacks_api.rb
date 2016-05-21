@@ -2,7 +2,7 @@ module API
   module V1
     class FeedbacksAPI < Grape::API
       
-      resource :feedbacks do
+      resource :feedbacks, desc: '意见反馈接口' do
         desc "意见反馈"
         params do
           requires :content, type: String, desc: "反馈内容，必须"

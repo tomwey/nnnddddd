@@ -5,7 +5,7 @@ module API
       helpers API::SharedParams
       
       # 用户收藏视频相关
-      resource :user do 
+      resource :user, desc: '用户相关接口' do 
         desc "用户收藏"
         params do
           requires :token, type: String, desc: "用户认证Token"

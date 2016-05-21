@@ -77,6 +77,14 @@ module API
         expose :online_users_count, as: :view_count
       end
       
+      class Bilibili < Base
+        expose :content, format_with: :null
+        expose :stream_id, format_with: :null
+        expose :author_name, as: :author
+        expose :location, format_with: :null
+        expose :created_at, as: :sent_at, format_with: :chinese_datetime
+      end
+      
       # Banner
       class Banner < Base
         expose :image do |model, opts|
