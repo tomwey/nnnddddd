@@ -73,7 +73,7 @@ module API
         get :live do
           
           lv = LiveVideo.find_by(stream_id: params[:sid])
-          lv.increamt_online_user(1) unless lv.blank?
+          lv.update_online_user_count(1) unless lv.blank?
           
           PlayStat.where(
             stream_id: params[:sid],
@@ -104,7 +104,7 @@ module API
         get :cancel_live do
           
           lv = LiveVideo.find_by(stream_id: params[:sid])
-          lv.increamt_online_user(-1) unless lv.blank?
+          lv.update_online_user_count(-1) unless lv.blank?
           
           PlayStat.where(
             stream_id: params[:sid],

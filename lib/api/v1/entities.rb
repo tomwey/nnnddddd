@@ -73,7 +73,8 @@ module API
         expose :live_address, format_with: :null
         expose :body,         format_with: :null
         expose :stream_id, format_with: :null
-        expose :view_count, :rtmp_url, :hls_url, :type, :detail_images
+        expose :rtmp_url, :hls_url, :type, :detail_images
+        expose :online_users_count, as: :view_count
       end
       
       # Banner

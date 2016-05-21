@@ -94,8 +94,24 @@ class LiveVideo < ActiveRecord::Base
     # end
   end
   
-  def increamt_online_user(n)
-    # TODO
+  def update_online_user_count(n)
+    if $redis.get(stream_id).blank?
+      $redis.set(stream_id, self.view_count)
+    end
+    
+    count = $redis.get(stream_id).to_i
+    if count + n > 0
+      count = count + n
+      $redis.set(stream_id, count)
+    end
+    
+    # 通知消息
+    $mqtt.publish(stream_id, $redis.get(stream_id))
+    
+  end
+  
+  def online_users_count
+    $redis.get(stream_id) || self.view_count
   end
   
   # ------------------------------------------------------------------------------- #

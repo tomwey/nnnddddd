@@ -22,19 +22,22 @@ index do
   column :body, sortable: false
   column :lived_at
   column :live_address
-  column '活动图片', sortable: false do |live_video|
-    ul do
-      live_video.images.each do |image|
-        li do
-          image_tag(image.url(:small), size: '120x74')
-        end
-      end
-    end
-  end
+  # column '活动图片', sortable: false do |live_video|
+  #   ul do
+  #     live_video.images.each do |image|
+  #       li do
+  #         image_tag(image.url(:small), size: '120x74')
+  #       end
+  #     end
+  #   end
+  # end
   column '直播流ID', sortable: false do |lv|
     lv.stream_id
   end
-  column '直播相关', sortable: false do |live_video|
+  column '围观人数' do |lv|
+    lv.online_users_count
+  end
+  column '直播相关', columns: 3, sortable: false do |live_video|
     raw("RTMP推流地址：#{live_video.rtmp_push_url}<br>
          RTMP直播地址：#{live_video.rtmp_url}<br>
          HLS直播地址： #{live_video.hls_url}<br>
