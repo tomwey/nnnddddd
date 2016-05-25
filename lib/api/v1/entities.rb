@@ -43,6 +43,7 @@ module API
           model.file.blank? ? "" : model.file.url(:cover_image)
         end
         expose :view_count, :likes_count, :type
+        expose :stream_id, format_with: :null
         expose :created_on do |model, opts|
           model.created_at.blank? ? "" : model.created_at.strftime('%Y-%m-%d')
         end
