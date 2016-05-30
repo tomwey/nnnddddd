@@ -107,9 +107,9 @@ module API
         
         desc "修改密码"
         params do
-          requires :token,    type: String, desc: "用户认证Token, 必须"
+          # requires :token,    type: String, desc: "用户认证Token, 必须"
           requires :password, type: String, desc: "新的密码，必须"
-          # requires :code,     type: String, desc: "手机验证码，必须"
+          requires :code,     type: String, desc: "手机验证码，必须"
           requires :mobile,   type: String, desc: "手机号，必须"
         end
         post :update_password do
