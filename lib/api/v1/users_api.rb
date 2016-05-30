@@ -109,10 +109,12 @@ module API
         params do
           requires :token,    type: String, desc: "用户认证Token, 必须"
           requires :password, type: String, desc: "新的密码，必须"
-          requires :code,     type: String, desc: "手机验证码，必须"
+          # requires :code,     type: String, desc: "手机验证码，必须"
+          requires :mobile,   type: String, desc: "手机号，必须"
         end
         post :update_password do
-          user = authenticate!
+          user = User.find_by(mobile: params[:mobile])
+          return render_error(1004, '用户还未注册') if user.blank?
           
           # 检查密码长度
           return render_error(1003, '密码太短，至少为6位') if params[:password].length < 6
