@@ -1,4 +1,7 @@
 class Video < ActiveRecord::Base
+  include PgSearch
+  pg_search_scope :search, against: [:title, :body]
+  
   validates :title, :file, :cover_image, :category_id, presence: true
   
   belongs_to :user
@@ -11,6 +14,7 @@ class Video < ActiveRecord::Base
   scope :sorted, -> { order('sort desc') }
   scope :recent, -> { order('id desc') }
   scope :hot,    -> { order('view_count desc') }
+  scope :more_liked, -> { order('likes_count desc') }
   
   before_create :generate_stream_id
   def generate_stream_id

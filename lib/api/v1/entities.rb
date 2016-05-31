@@ -48,6 +48,10 @@ module API
         end
       end
       
+      class Search < Base
+        expose :keyword, :search_count
+      end
+      
       class Video < SimpleVideo
         expose :video_file do |model, opts|
           model.file.blank? ? "" : model.file.url#model.file.url(:mp4)

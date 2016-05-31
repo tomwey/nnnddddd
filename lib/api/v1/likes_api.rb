@@ -4,6 +4,20 @@ module API
       
       helpers API::SharedParams
       
+      resource :videos, desc: '推荐视频相关接口' do
+        desc "最受关注的视频"
+        params do
+          use :pagination
+        end
+        get :more_liked do
+          @videos = Video.more_liked.hot.recent
+          if params[:page]
+            @videos = @videos.paginate page: params[:page], per_page: page_size
+          end
+          render_json(@videos, API::V1::Entities::Video)
+        end # end get liked
+      end # end resource
+      
       # 用户收藏视频相关
       resource :user, desc: '用户相关接口' do 
         desc "用户收藏"

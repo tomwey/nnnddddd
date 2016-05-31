@@ -27,6 +27,9 @@ gem 'spring',        group: :development
 # 防止大量请求的IP
 gem 'rack-attack'
 
+# postgresql search
+gem 'pg_search'
+
 # 队列处理消息发送
 gem 'sidekiq'
 gem 'sinatra', :require => nil
