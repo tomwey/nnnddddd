@@ -40,12 +40,10 @@ module API
           model.file.blank? ? "" : model.file.url#model.file.url(:mp4)
         end
         expose :cover_image do |model, opts|
-          model.file.blank? ? "" : model.file.url(:cover_image)
+          model.cover_image.blank? ? "" : model.cover_image.url(:large)
         end
-        expose :view_count, :likes_count, :type
-        expose :msg_count do |model, opts|
-          0
-        end
+        expose :type
+        expose :view_count, :likes_count, :msg_count
         expose :stream_id, format_with: :null
         expose :created_on do |model, opts|
           model.created_at.blank? ? "" : model.created_at.strftime('%Y-%m-%d')
@@ -55,19 +53,6 @@ module API
       class Video < SimpleVideo
         expose :category, using: API::V1::Entities::Category
         expose :user,     using: API::V1::Entities::UserProfile, if: Proc.new { |video| video.user_id > 0 }
-      end
-      
-      class LiveHotVideo < Base
-        expose :title,       format_with: :null
-        expose :cover_image, format_with: :null
-        expose :live_time,   format_with: :null
-        expose :live_address, format_with: :null
-        expose :body,         format_with: :null
-        expose :stream_id, format_with: :null
-        expose :view_count, :vod_url, :detail_images
-        expose :type do |model, opts|
-          2
-        end
       end
       
       class LiveVideo < Base

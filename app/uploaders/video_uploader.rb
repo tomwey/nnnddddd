@@ -1,6 +1,6 @@
 class VideoUploader < CarrierWave::Uploader::Base
   include CarrierWave::Video
-  include CarrierWave::Video::Thumbnailer
+  # include CarrierWave::Video::Thumbnailer
   
   storage :qiniu
   # storage :fog
@@ -32,16 +32,16 @@ class VideoUploader < CarrierWave::Uploader::Base
   #   end
   # end
   
-  version :cover_image do
-    process thumbnail: [{format: 'jpg', quality: 10, size: 192, strip: false, logger: Rails.logger}]
-    def full_filename for_file
-      jpg_name for_file, version_name
-    end
-  end
-  
-  def jpg_name for_file, version_name
-    %Q{#{version_name}_#{for_file.chomp(File.extname(for_file))}.jpg}
-  end
+  # version :cover_image do
+  #   process thumbnail: [{format: 'jpg', quality: 10, size: 192, strip: false, logger: Rails.logger}]
+  #   def full_filename for_file
+  #     jpg_name for_file, version_name
+  #   end
+  # end
+  # 
+  # def jpg_name for_file, version_name
+  #   %Q{#{version_name}_#{for_file.chomp(File.extname(for_file))}.jpg}
+  # end
   
   protected
     def secure_token

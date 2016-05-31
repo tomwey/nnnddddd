@@ -45,13 +45,16 @@
         content: "反馈内容"
       video:
         title: "视频标题"
+        body: "视频简介"
         file: "视频文件"
         user_id: "所属用户"
         category_id: "所属类别"
         view_count: "围观人数"
         likes_count: "收藏数"
+        msg_count: "弹幕数"
         sort: "显示顺序"
-        from_live: "是否来自直播录制视频"
+        cover_image: "视频封面图"
+        stream_id: "流ID"
       like:
         likeable_id: '被收藏的视频'
       live_video:

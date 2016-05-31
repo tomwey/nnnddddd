@@ -11,7 +11,7 @@ module API
           use :pagination
         end
         get do
-          @videos = Video.no_from_live.sorted.hot.recent
+          @videos = Video.sorted.hot.recent
           
           if params[:cid]
             @videos = @videos.where(category_id: params[:cid])
@@ -25,14 +25,17 @@ module API
         desc "上传视频"
         params do 
           requires :token,       type: String,  desc: "用户认证Token"
-          requires :category_id, type: Integer, desc: "类别ID"
-          requires :title,       type: String,  desc: "视频简介"
-          requires :video,       type: Rack::Multipart::UploadedFile, desc: "视频二进制文件, 视频格式为：mp4或者mov"
+          optional :category_id, type: Integer, desc: "类别ID"
+          requires :title,       type: String,  desc: "视频标题"
+          optional :body,        type: String,  desc: "视频简介"
+          requires :video,       type: Rack::Multipart::UploadedFile, desc: "视频二进制文件, 视频格式为：mp4,mov,3gp,avi,mpeg"
+          requires :cover_image, type: Rack::Multipart::UploadedFile, desc: "图片二进制文件, 视频格式为：jpg,jpeg,gif,png"
         end
         post do
           user = authenticate!
           
-          category = Category.find_by(id: params[:category_id])
+          category_id = params[:category_id].blank? ? 3 : params[:category_id].to_i
+          category = Category.find_by(id: category_id)
           if category.blank?
             return render_error(4004, '没有该类别')
           end
@@ -40,7 +43,9 @@ module API
           @video = Video.new(user_id: user.id, 
                              title: params[:title], 
                              file: params[:video], 
-                             category_id: params[:category_id])
+                             category_id: params[:category_id],
+                             cover_image: params[:cover_image],
+                             body: params[:body])
           if @video.save
             render_json(@video, API::V1::Entities::Video)
           else

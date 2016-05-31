@@ -5,7 +5,7 @@ menu priority: 5, label: '视频'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :title, :file, :category_id, :stream_id, :from_live
+permit_params :title, :file, :cover_image, :body, :category_id, :stream_id
 #
 # or
 #
@@ -17,6 +17,13 @@ permit_params :title, :file, :category_id, :stream_id, :from_live
 index do
   selectable_column
   column('#', id) { |video| link_to video.id, admin_video_path(video) }
+  column '视频封面图', sortable: false do |video|
+    if video.cover_image.blank?
+      ''
+    else
+      image_tag video.cover_image.url(:small)
+    end
+  end
   column :title, sortable: false
   column '视频文件', sortable: false do |video|
     raw("
@@ -25,16 +32,12 @@ index do
       Your browser doesn't support HTML5 video tag.
     </video>")
   end
-  column '视频流ID', sortable: false do |video|
-    video.stream_id
-  end
+  column :stream_id, sortable: false
   column :view_count
   column :likes_count
+  column :msg_count
   column '所属类别', sortable: false do |video|
     video.category.try(:name)
-  end
-  column '是否来自直播录制视频', sortable: false do |video|
-    video.from_live ? "是" : "否"
   end
   column '所属用户', sortable: false do |video|
     video.user_id == -1 ? '系统' : video.user.try(:nickname)
@@ -45,6 +48,8 @@ end
 
 show do |video|
   h3 video.title
+  div video.body
+  br
   div do
     raw("
     <video width=\"640\" controls >
@@ -60,9 +65,10 @@ form html: { multipart: true } do |f|
   f.inputs do
     f.input :category_id, as: :select, collection: Category.all.map { |category| [category.name, category.id] }, prompt: '-- 请选择类别 --'
     f.input :title
-    f.input :file, as: :file, hint: '上传视频文件，格式为：mp4或mov'
+    f.input :cover_image, as: :file, hint: '上传封面图，格式为：jpg,jpeg,png,gif'
+    f.input :file, as: :file, hint: '上传视频文件，格式为：mp4 mov avi 3gp mpeg'
+    f.input :body
     f.input :sort, hint: '视频显示顺序，值越大，显示越靠前'
-    f.input :from_live#, hint: '是否该视频来源于直播录制'
   end 
   
   actions
