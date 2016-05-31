@@ -1,21 +1,17 @@
 class LiveVideo < ActiveRecord::Base
-  validates :title, :lived_at, presence: true
+  validates :title, :body, :cover_image, presence: true
   
-  mount_uploaders :images, ImagesUploader
+  has_many :likes, as: :likeable
   
-  scope :fields_for_list, -> { select(:id, :title, :lived_at, :images, :view_count, :stream_id) }
+  mount_uploader :cover_image, CoverImageUploader
+  mount_uploader :video_file, VideoUploader
+  
+  scope :fields_for_list, -> { select(:id, :title, :created_at, :cover_image, :view_count, :stream_id) }
   scope :living, -> { with_state(:living) }
   scope :closed, -> { with_state(:closed) }
+  scope :hot,    -> { order('view_count desc') }
   scope :recent, -> { order('id desc') }
   
-  # 验证直播时间，必须是在将来的某个时间
-  validate :check_lived_at
-  def check_lived_at
-    if self.lived_at < Time.now
-      errors.add(:base, '直播时间必须是在未来的时间点')
-    end
-  end
-    
   # 生成直播流id
   after_create :generate_live_stream_id
   def generate_live_stream_id
@@ -42,6 +38,11 @@ class LiveVideo < ActiveRecord::Base
     end
     
     # 结束直播
+    after_transition :living => :closed do |live_video, transition|
+      # 将用户在线数更新到view_count
+      live_video.view_count = live_video.online_users_count
+      live_video.save
+    end
     event :close do
       transition :living => :closed
     end
@@ -140,27 +141,27 @@ class LiveVideo < ActiveRecord::Base
     "http://live2.yaying.tv/zgnx/#{stream_id}/playlist.m3u8"
   end
   
-  def vod_url
-    return "" if stream_id.blank?
-    "http://ulive-record.ufile.ucloud.cn/#{stream_id}.mp4"
-  end
-  
-  def live_time
-    lived_at.strftime('%Y-%m-%d %H:%M:%S')
-  end
-  
-  def cover_image
-    return "" if images.blank? or images.empty?
-    images.first.url(:thumb)
-  end
-  
-  def detail_images
-    arr = []
-    images.each do |image|
-      arr << image.url(:large)
-    end
-    arr
-  end
+  # def vod_url
+  #   return "" if stream_id.blank?
+  #   "http://ulive-record.ufile.ucloud.cn/#{stream_id}.mp4"
+  # end
+  # 
+  # def live_time
+  #   lived_at.strftime('%Y-%m-%d %H:%M:%S')
+  # end
+  # 
+  # def cover_image
+  #   return "" if images.blank? or images.empty?
+  #   images.first.url(:thumb)
+  # end
+  # 
+  # def detail_images
+  #   arr = []
+  #   images.each do |image|
+  #     arr << image.url(:large)
+  #   end
+  #   arr
+  # end
   # ------------------------------------------------------------------------------- #
   
 end

@@ -60,14 +60,17 @@
       live_video:
         title: '节目名称'
         body: '节目描述'
-        images: '活动现场图片'
-        lived_at: '直播时间'
-        live_address: '直播地点'
         rtmp_push_url: '直播推流地址'
         rtmp_pull_url: 'RTMP直播地址'
         hls_pull_url: 'HLS直播地址'
-        channel_id: '直播频道ID'
-        closed: '直播是否开启'
+        stream_id: '直播流ID'
+        cover_image: '直播视频封面'
+        state: '直播状态'
+        view_count: '围观人数'
+        likes_count: '收藏人数'
+        msg_count: '弹幕数'
+        video_file: '直播录制文件'
+        
       live_provider:
         rtmp_push_url: '推流域名'
         rtmp_pull_url: 'RTMP播放域名'

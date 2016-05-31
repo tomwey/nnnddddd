@@ -5,7 +5,7 @@ menu priority: 5, label: '视频'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :title, :file, :cover_image, :body, :category_id, :stream_id
+permit_params :title, :file, :cover_image, :body, :category_id#, :stream_id
 #
 # or
 #
@@ -33,9 +33,9 @@ index do
     </video>")
   end
   column :stream_id, sortable: false
-  column :view_count
-  column :likes_count
-  column :msg_count
+  column '人数统计', sortable: false do |video|
+    raw("观看人数：#{video.view_count}<br>弹幕数：#{video.msg_count}<br>收藏数：#{video.likes_count}")
+  end
   column '所属类别', sortable: false do |video|
     video.category.try(:name)
   end
@@ -48,7 +48,7 @@ end
 
 show do |video|
   h3 video.title
-  div video.body
+  div raw(video.body)
   br
   div do
     raw("
@@ -59,19 +59,20 @@ show do |video|
   end
 end
 
-form html: { multipart: true } do |f|
-  f.semantic_errors
-  
-  f.inputs do
-    f.input :category_id, as: :select, collection: Category.all.map { |category| [category.name, category.id] }, prompt: '-- 请选择类别 --'
-    f.input :title
-    f.input :cover_image, as: :file, hint: '上传封面图，格式为：jpg,jpeg,png,gif'
-    f.input :file, as: :file, hint: '上传视频文件，格式为：mp4 mov avi 3gp mpeg'
-    f.input :body
-    f.input :sort, hint: '视频显示顺序，值越大，显示越靠前'
-  end 
-  
-  actions
-end
+# form html: { multipart: true } do |f|
+#   f.semantic_errors
+#   
+#   f.inputs do
+#     f.input :category_id, as: :select, collection: Category.all.map { |category| [category.name, category.id] }, prompt: '-- 请选择类别 --'
+#     f.input :title
+#     f.input :cover_image, as: :file, hint: '上传封面图，格式为：jpg,jpeg,png,gif'
+#     f.input :file, as: :file, hint: '上传视频文件，格式为：mp4 mov avi 3gp mpeg'
+#     f.input :body
+#     f.input :sort, hint: '视频显示顺序，值越大，显示越靠前'
+#   end 
+#   
+#   actions
+# end
+form partial: 'form'
 
 end

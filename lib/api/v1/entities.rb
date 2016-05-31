@@ -36,9 +36,7 @@ module API
       # 点播视频
       class SimpleVideo < Base
         expose :title, format_with: :null
-        expose :video_file do |model, opts|
-          model.file.blank? ? "" : model.file.url#model.file.url(:mp4)
-        end
+        expose :body, format_with: :null
         expose :cover_image do |model, opts|
           model.cover_image.blank? ? "" : model.cover_image.url(:large)
         end
@@ -51,18 +49,21 @@ module API
       end
       
       class Video < SimpleVideo
+        expose :video_file do |model, opts|
+          model.file.blank? ? "" : model.file.url#model.file.url(:mp4)
+        end
         expose :category, using: API::V1::Entities::Category
         expose :user,     using: API::V1::Entities::UserProfile, if: Proc.new { |video| video.user_id > 0 }
       end
       
-      class LiveVideo < Base
-        expose :title,       format_with: :null
-        expose :cover_image, format_with: :null
-        expose :live_time,   format_with: :null
-        expose :live_address, format_with: :null
-        expose :body,         format_with: :null
-        expose :stream_id, format_with: :null
-        expose :rtmp_url, :hls_url, :type, :detail_images
+      class LiveSimpleVideo < SimpleVideo
+        expose :video_file do |model, opts|
+          model.video_file.blank? ? "" : model.video_file.url#model.file.url(:mp4)
+        end
+      end
+      
+      class LiveVideo < LiveSimpleVideo
+        expose :rtmp_url, :hls_url
         expose :online_users_count, as: :view_count
       end
       

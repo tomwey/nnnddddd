@@ -22,9 +22,9 @@ module API
           use :pagination
         end
         get :hot_videos do
-          @videos = Video.from_live.sorted.hot.recent
+          @videos = LiveVideo.where('video_file IS NOT NULL').hot.recent
           @videos = @videos.paginate(page: params[:page], per_page: page_size) if params[:page]
-          render_json(@videos, API::V1::Entities::SimpleVideo)
+          render_json(@videos, API::V1::Entities::LiveSimpleVideo)
         end # end get
       end # end resource
       
