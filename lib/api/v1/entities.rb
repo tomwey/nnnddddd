@@ -86,6 +86,21 @@ module API
         end
         expose :link, format_with: :null
       end
+      # 打赏相关
+      class Grant < Base
+        expose :money do |model, opts|
+          ('%.2f' % model.money).to_f
+        end
+        expose :created_at, format_with: :chinese_datetime
+      end
+      
+      class SentGrant < Grant
+        expose :granted_user, as: :user, using: API::V1::Entities::UserProfile
+      end
+      
+      class ReceiptGrant < Grant
+        expose :granting_user, as: :user, using: API::V1::Entities::UserProfile
+      end
       
       # 产品
       class Product < Base

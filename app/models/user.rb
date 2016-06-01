@@ -9,6 +9,9 @@ class User < ActiveRecord::Base
   has_many :likes, dependent: :destroy
   has_many :liked_videos, through: :likes, source: :likeable, source_type: 'Video'
   
+  # has_many :grantings, class_name: 'Grant', foreign_key: 'from'
+  # has_many :granteds,  class_name: 'Grant', foreign_key: 'to'
+  
   scope :no_delete, -> { where(visible: true) }
   scope :verified,  -> { where(verified: true) }
   
@@ -73,6 +76,18 @@ class User < ActiveRecord::Base
   # 检查支付密码是否正确
   def is_pay_password?(password)
     BCrypt::Password.new(self.pay_password_digest) == password
+  end
+  
+  def grant_money!(money)
+    self.balance += money
+    if money > 0
+      # 表示收到打赏
+      self.receipt_money += money
+    else
+      # 表示打赏别人
+      self.sent_money += -money
+    end
+    self.save!
   end
   
 end
