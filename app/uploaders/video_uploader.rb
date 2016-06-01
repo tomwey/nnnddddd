@@ -21,6 +21,14 @@ class VideoUploader < CarrierWave::Uploader::Base
     %w(mp4 mov avi 3gp mpeg)
   end
   
+  def move_to_cache
+    true
+  end
+  
+  def move_to_store
+    true
+  end
+  
   # process encode_video: [:mp4, custom: "-preset medium -pix_fmt yuv420p"]
   # :custom => "-strict experimental -q:v 5 -preset slow -g 30"
   # process :encode_video=> [:mp4, audio_codec: "aac", resolution: :same, video_bitrate: :same]
