@@ -28,7 +28,8 @@ module API
             return render_error(7003, '余额不足，请充值后再操作')
           end
           
-          to_user = User.find_by(params[:to])
+          to_user = User.find_by(id: params[:to])
+          
           User.transaction do
             Grant.create!(from: user.id, money: money, to: to_user.try(:id))
             

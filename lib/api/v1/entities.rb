@@ -5,6 +5,7 @@ module API
         format_with(:null) { |v| v.blank? ? "" : v }
         format_with(:chinese_date) { |v| v.blank? ? "" : v.strftime('%Y-%m-%d') }
         format_with(:chinese_datetime) { |v| v.blank? ? "" : v.strftime('%Y-%m-%d %H:%M:%S') }
+        format_with(:money_format) { |v| v.blank? ? 0 : ('%.2f' % v).to_f }
         expose :id
         # expose :created_at, format_with: :chinese_datetime
       end # end Base
@@ -18,6 +19,8 @@ module API
         expose :avatar do |model, opts|
           model.avatar.blank? ? "" : model.avatar_url(:large)
         end
+        expose :sent_money, format_with: :money_format
+        expose :receipt_money, format_with: :money_format
       end
       
       # 用户详情
@@ -88,18 +91,24 @@ module API
       end
       # 打赏相关
       class Grant < Base
-        expose :money do |model, opts|
-          ('%.2f' % model.money).to_f
-        end
+        expose :money, format_with: :money_format
         expose :created_at, format_with: :chinese_datetime
       end
       
+      class SentUserProfile < UserProfile
+        expose :sent_money, format_with: :money_format
+      end
+      
+      class ReceiptUserProfile < UserProfile
+        expose :receipt_money, format_with: :money_format
+      end
+      
       class SentGrant < Grant
-        expose :granted_user, as: :user, using: API::V1::Entities::UserProfile
+        expose :granted_user, as: :user, using: API::V1::Entities::UserProfile#, if: Proc.new { |u| u.present? }
       end
       
       class ReceiptGrant < Grant
-        expose :granting_user, as: :user, using: API::V1::Entities::UserProfile
+        expose :granting_user, as: :user, using: API::V1::Entities::UserProfile#, if: Proc.new { |u| u.present? }
       end
       
       # 产品
