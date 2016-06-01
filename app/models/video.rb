@@ -1,6 +1,6 @@
 class Video < ActiveRecord::Base
-  include PgSearch
-  pg_search_scope :search, against: [:title, :body]
+  # include PgSearch
+  # pg_search_scope :search, against: [:title, :body]
   
   validates :title, :file, :cover_image, :category_id, presence: true
   
@@ -23,5 +23,9 @@ class Video < ActiveRecord::Base
   
   def type
     2
+  end
+  
+  def self.search(keyword)
+    where('title like :keyword or body like :keyword', keyword: "%#{keyword}%")
   end
 end

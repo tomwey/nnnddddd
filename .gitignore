@@ -44,4 +44,5 @@ doc/wiki_repo
 solr/data/
 solr/pids/
 bin/
+dump.rdb
 

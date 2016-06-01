@@ -28,7 +28,7 @@ gem 'spring',        group: :development
 gem 'rack-attack'
 
 # postgresql search
-gem 'pg_search'
+# gem 'pg_search'
 
 # 队列处理消息发送
 gem 'sidekiq'

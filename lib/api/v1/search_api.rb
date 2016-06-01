@@ -11,7 +11,7 @@ module API
         end
         get :hot_keywords do
           size = params[:size].blank? ? 8 : params[:size].to_i
-          @searches = Search.order('search_count desc').limit(size)
+          @searches = Search.hot.limit(size)
           render_json(@searches, API::V1::Entities::Search)
         end # end hot_keywords
         
@@ -20,7 +20,7 @@ module API
           requires :q, type: String, desc: "关键字，必须"
         end
         get :kw_list do
-          @searches = Search.kw_search(params[:q].strip)
+          @searches = Search.kw_search(params[:q].strip).hot
           render_json(@searches, API::V1::Entities::Search)
         end # end
          
