@@ -12,6 +12,8 @@
       live_video: "直播"
       live_provider: "直播提供者"
       bilibili: '弹幕'
+      grant: '打赏'
+      search: '搜索记录'
     attributes:
       user:
         mobile: "手机"
@@ -82,6 +84,13 @@
         created_at: '发布时间'
         location: '作者位置'
         author_id: '作者'
+      grant:
+        from: '打赏人'
+        to: '被打赏人'
+        money: '打赏金额'
+      search:
+        keyword: '关键字'
+        search_count: '搜索次数'
         
     errors:
       models:
