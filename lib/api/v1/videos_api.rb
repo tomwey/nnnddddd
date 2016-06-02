@@ -7,7 +7,8 @@ module API
       resource :videos, desc: '视频推荐接口' do
         desc "获取推荐视频列表"
         params do
-          optional :cid, type: Integer, desc: "类别ID, 如果不传该参数，默认返回所有的视频"
+          optional :cid,   type: Integer, desc: "类别ID, 如果不传该参数，默认返回所有的视频"
+          optional :token, type: String,  desc: "如果用户登陆，那么需要传人认证Token"
           use :pagination
         end
         get do
@@ -19,7 +20,9 @@ module API
           
           @videos = @videos.paginate(page: params[:page], per_page: page_size) if params[:page]
           
-          render_json(@videos, API::V1::Entities::Video)
+          user = params[:token].blank? ? nil : User.find_by(private_token: params[:token])
+
+          render_json(@videos, API::V1::Entities::Video, { liked_user: user })
         end # end get videos
         
         desc "上传视频"

@@ -49,6 +49,13 @@ module API
         expose :created_on do |model, opts|
           model.created_at.blank? ? "" : model.created_at.strftime('%Y-%m-%d')
         end
+        expose :liked do |model, opts|
+          if opts[:opts].blank?
+            false
+          else
+            opts[:opts][:liked_user].blank? ? false : opts[:opts][:liked_user].liked?(model)
+          end
+        end
       end
       
       class Search < Base

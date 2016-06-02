@@ -26,7 +26,8 @@ module API
          
         desc "根据关键字搜索视频"
         params do
-          requires :q, type: String, desc: "关键字，必须"
+          requires :q,     type: String, desc: "关键字，必须"
+          optional :token, type: String, desc: 'Token'
           use :pagination
         end
         get do
@@ -41,7 +42,8 @@ module API
             @videos = @videos.paginate page: params[:page], per_page: page_size
           end
           
-          render_json(@videos, API::V1::Entities::Video)
+          user = params[:token].blank? ? nil : User.find_by(private_token: params[:token])
+          render_json(@videos, API::V1::Entities::Video, { liked_user: user })
         end # end get
       end # end resource
       
