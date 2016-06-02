@@ -7,6 +7,7 @@ module API
       resource :videos, desc: '推荐视频相关接口' do
         desc "最受关注的视频"
         params do
+          optional :token, type: String, desc: '用户认证Token'
           use :pagination
         end
         get :more_liked do
@@ -14,7 +15,8 @@ module API
           if params[:page]
             @videos = @videos.paginate page: params[:page], per_page: page_size
           end
-          render_json(@videos, API::V1::Entities::Video)
+          user = params[:token].blank? ? nil : User.find_by(private_token: params[:token])
+          render_json(@videos, API::V1::Entities::Video, { liked_user: user })
         end # end get liked
       end # end resource
       
