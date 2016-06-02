@@ -16,6 +16,7 @@ module API
       mount API::V1::LikesAPI
       mount API::V1::LiveAPI
       mount API::V1::SearchAPI
+      mount API::V1::ViewHistoriesAPI
       mount API::V1::GrantsAPI
       mount API::V1::BilibilisAPI
       # 

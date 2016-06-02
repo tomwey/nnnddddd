@@ -2,6 +2,7 @@ class LiveVideo < ActiveRecord::Base
   validates :title, :body, :cover_image, presence: true
   
   has_many :likes, as: :likeable
+  has_many :view_histories, as: :viewable
   
   mount_uploader :cover_image, CoverImageUploader
   mount_uploader :video_file, VideoUploader

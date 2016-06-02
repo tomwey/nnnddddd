@@ -24,13 +24,19 @@ module API
       resource :user, desc: '用户相关接口' do 
         desc "用户收藏"
         params do
-          requires :token, type: String, desc: "用户认证Token"
+          requires :token,       type: String,  desc: "用户认证Token"
           requires :likeable_id, type: Integer, desc: "被收藏对象的ID，比如视频的ID"
+          optional :type,        type: Integer, desc: '视频流类型，推荐里面的视频type值为2，直播为1，如果不传该参数，默认为收藏推荐里面的视频'
         end
         post :like do
           user = authenticate!
           
-          likeable_type = 'Video'
+          if params[:type] && params[:type].to_i == 1
+            likeable_type = 'LiveVideo'
+          else
+            likeable_type = 'Video'
+          end
+          
           klass = likeable_type.classify.constantize
           
           likeable = klass.find_by(id: params[:likeable_id])
@@ -47,11 +53,18 @@ module API
         params do
           requires :token, type: String, desc: "用户认证Token"
           requires :likeable_id, type: Integer, desc: "被收藏对象的ID，比如视频的ID"
+          optional :type,        type: Integer, desc: '视频流类型，推荐里面的视频type值为2，直播为1，如果不传该参数，默认为收藏推荐里面的视频'
         end
         post :cancel_like do
           user = authenticate!
           
-          likeable_type = 'Video'
+          # likeable_type = 'Video'
+          if params[:type] && params[:type].to_i == 1
+            likeable_type = 'LiveVideo'
+          else
+            likeable_type = 'Video'
+          end
+          
           klass = likeable_type.classify.constantize
           
           likeable = klass.find_by(id: params[:likeable_id])

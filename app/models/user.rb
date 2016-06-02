@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
   has_many :likes, dependent: :destroy
   has_many :liked_videos, through: :likes, source: :likeable, source_type: 'Video'
   
+  has_many :view_histories, dependent: :destroy
+  has_many :viewed_videos, through: :view_histories, source: :viewable, source_type: 'Video'
+  has_many :viewed_live_videos, through: :view_histories, source: :viewable, source_type: 'LiveVideo'
+  
   # has_many :grantings, class_name: 'Grant', foreign_key: 'from'
   # has_many :granteds,  class_name: 'Grant', foreign_key: 'to'
   

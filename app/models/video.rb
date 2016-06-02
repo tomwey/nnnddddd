@@ -7,6 +7,7 @@ class Video < ActiveRecord::Base
   belongs_to :user
   belongs_to :category
   has_many :likes, as: :likeable
+  has_many :view_histories, as: :viewable
   
   mount_uploader :file, VideoUploader
   mount_uploader :cover_image, CoverImageUploader
