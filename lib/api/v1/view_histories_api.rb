@@ -33,11 +33,19 @@ module API
             viewable_type = 'Video'
           end
           
-          ViewHistory.create!(user_id: user.id, 
-                              viewable_id: params[:viewable_id],
-                              viewable_type: viewable_type,
-                              playback_progress: params[:progress])
-                  
+          vh = ViewHistory.where(user_id: user.id, 
+                                 viewable_id: params[:viewable_id], 
+                                 viewable_type: viewable_type).first
+          if vh.blank?
+            ViewHistory.create!(user_id: user.id, 
+                               viewable_id: params[:viewable_id],
+                               viewable_type: viewable_type,
+                               playback_progress: params[:progress])
+          else
+            vh.playback_progress = params[:progress]
+            vh.save!
+          end
+              
           render_json_no_data
           
         end # end post
