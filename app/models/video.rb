@@ -1,3 +1,4 @@
+require 'qiniu'
 class Video < ActiveRecord::Base
   # include PgSearch
   # pg_search_scope :search, against: [:title, :body]
@@ -9,7 +10,7 @@ class Video < ActiveRecord::Base
   has_many :likes, as: :likeable
   has_many :view_histories, as: :viewable
   
-  mount_uploader :file, VideoUploader
+  # mount_uploader :file, VideoUploader
   mount_uploader :cover_image, CoverImageUploader
   
   scope :sorted, -> { order('sort desc') }
@@ -24,6 +25,11 @@ class Video < ActiveRecord::Base
   
   def type
     2
+  end
+  
+  def file_url
+    origin_file_url = 'http://cdn.yaying.tv' + "/uploads/video/" + self.file
+    Qiniu::Auth.authorize_download_url(origin_file_url)
   end
   
   def self.search(keyword)

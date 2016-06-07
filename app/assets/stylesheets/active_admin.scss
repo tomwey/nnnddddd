@@ -10,6 +10,7 @@
 /*
  *= require redactor-rails
  *= redactor-rails/plugins
+ *= require qiniu_direct_uploader
  */
 
 // Active Admin's got SASS!
@@ -20,3 +21,10 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+.dropzone{
+  border: solid 1px #666;
+  width: 600px;
+  padding: 30px 10px 30px 10px;
+  margin-bottom: 30px;
+}

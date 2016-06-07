@@ -28,7 +28,7 @@ index do
   column '视频文件', sortable: false do |video|
     raw("
     <video height=\"120\" controls >
-      <source src=\"#{video.file.url}\" type=\"video/mp4\">
+      <source src=\"#{video.file_url}\" type=\"video/mp4\">
       Your browser doesn't support HTML5 video tag.
     </video>")
   end
@@ -53,7 +53,7 @@ show do |video|
   div do
     raw("
     <video width=\"640\" controls >
-      <source src=\"#{video.file.url}\" type=\"video/mp4\">
+      <source src=\"#{video.file_url}\" type=\"video/mp4\">
       Your browser doesn't support HTML5 video tag.
     </video>")
   end

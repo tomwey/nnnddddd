@@ -1,3 +1,19 @@
+<div class="dropzone" id="dropzone">
+  <%= qiniu_uploader_form callback_url: videos_path,
+    bucket:        'zgnytv',
+    id:            "photograph-uploader",
+    key:           "uploads/video/#{SecureRandom.uuid}.mp4",
+    custom_fields: {aaa:1,bbb:2},
+    progress_bar_id: 'progress-bar',
+    drop_paste_zone_id: 'dropzone' do %>
+    
+    <div class="bars" id="progress-bar" style="margin-bottom: 20px;">
+      <%= label_tag '*视频文件' %><br>
+      <%= file_field_tag :file, accept: "video/mp4, video/mov, video/mpg, video/mpeg" %> <!-- You can also drag and drop files here -->
+    </div>
+  <% end %>
+</div>
+
 <%= form_for [:admin, @video] do |f| %>
   
   <div style="width: 80%; margin-bottom: 20px;">
@@ -9,16 +25,16 @@
     <%= f.label :title, '*视频标题' %><br>
     <%= f.text_field :title %>
   </div>
-  
   <div style="width: 80%; margin-bottom: 20px;">
     <%= f.label :cover_image, '*视频封面图' %><br>
     <%= f.file_field :cover_image %>
   </div>
   
-  <div style="width: 80%; margin-bottom: 20px;">
+  <!--div style="width: 80%; margin-bottom: 20px;">
     <%= f.label :file, '*视频文件' %><br>
     <%= f.file_field :file %>
-  </div>
+  </div-->
+    <%= f.hidden_field :file, value: f.object.file %>
   
   <div style="width: 80%; margin-bottom: 20px;">
     <%= f.label :body, '视频简介' %>
@@ -32,6 +48,13 @@
   
   <%= f.submit '提交' %>
 <% end %>
+
+<script id="template-upload" type="text/x-tmpl">
+  <div class="upload">
+  {%=o.name%}
+  <div class="progress"><div class="bar" style="width: 0%"></div></div>
+</div>
+</script>
 
 <!--script>
 $(document).ready(

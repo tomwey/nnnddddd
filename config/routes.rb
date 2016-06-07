@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   
   # 网页
   resources :pages, path: :p, only: [:show]
+  resources :videos, only: [:index, :create]
   
   devise_for :admins, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
