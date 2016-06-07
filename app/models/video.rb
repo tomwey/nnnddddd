@@ -28,6 +28,7 @@ class Video < ActiveRecord::Base
   end
   
   def file_url
+    return '' if self.file.blank?
     origin_file_url = 'http://cdn.yaying.tv' + "/uploads/video/" + self.file
     Qiniu::Auth.authorize_download_url(origin_file_url)
   end

@@ -64,7 +64,7 @@ module API
       
       class Video < SimpleVideo
         expose :video_file do |model, opts|
-          model.file.blank? ? "" : model.file.url#model.file.url(:mp4)
+          model.file_url#model.file.blank? ? "" : model.file.url#model.file.url(:mp4)
         end
         expose :category, using: API::V1::Entities::Category
         expose :user,     using: API::V1::Entities::UserProfile, if: Proc.new { |video| video.user_id > 0 }
@@ -72,7 +72,7 @@ module API
       
       class LiveSimpleVideo < SimpleVideo
         expose :video_file do |model, opts|
-          model.video_file.blank? ? "" : model.video_file.url#model.file.url(:mp4)
+          model.video_file_url# model.video_file.blank? ? "" : model.video_file.url#model.file.url(:mp4)
         end
       end
       
