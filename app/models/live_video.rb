@@ -1,3 +1,4 @@
+require 'qiniu'
 class LiveVideo < ActiveRecord::Base
   validates :title, :body, :cover_image, presence: true
   
@@ -5,7 +6,7 @@ class LiveVideo < ActiveRecord::Base
   has_many :view_histories, as: :viewable
   
   mount_uploader :cover_image, CoverImageUploader
-  mount_uploader :video_file, VideoUploader
+  # mount_uploader :video_file, VideoUploader
   
   scope :fields_for_list, -> { select(:id, :title, :created_at, :cover_image, :view_count, :stream_id) }
   scope :living, -> { with_state(:living) }
@@ -27,6 +28,12 @@ class LiveVideo < ActiveRecord::Base
     when :closed  then '已结束'
     else ''
     end
+  end
+  
+  def video_file_url
+    return '' if self.video_file.blank?
+    origin_file_url = 'http://cdn.yaying.tv' + "/uploads/live_video/" + self.video_file
+    Qiniu::Auth.authorize_download_url(origin_file_url)
   end
   
   state_machine initial: :pending do

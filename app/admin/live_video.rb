@@ -32,7 +32,7 @@ index do
     else
       raw("
       <video height=\"120\" controls >
-        <source src=\"#{live_video.video_file.url}\" type=\"video/mp4\">
+        <source src=\"#{live_video.video_file_url}\" type=\"video/mp4\">
         Your browser doesn't support HTML5 video tag.
       </video>")
     end
@@ -105,7 +105,7 @@ show do |live_video|
     div do
       raw("
       <video width=\"640\" controls >
-        <source src=\"#{live_video.video_file.url}\" type=\"video/mp4\">
+        <source src=\"#{live_video.video_file_url}\" type=\"video/mp4\">
         Your browser doesn't support HTML5 video tag.
       </video>")
     end

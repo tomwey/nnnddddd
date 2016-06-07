@@ -1,4 +1,21 @@
+<div class="dropzone" id="dropzone">
+  <%= qiniu_uploader_form callback_url: videos_path,
+    bucket:        'zgnytv',
+    id:            "photograph-uploader2",
+    key:           "uploads/live_video/#{SecureRandom.uuid}.mp4",
+    custom_fields: {aaa:1,bbb:2},
+    progress_bar_id: 'progress-bar',
+    drop_paste_zone_id: 'dropzone' do %>
+    
+    <div class="bars" id="progress-bar">
+      <%= label_tag '直播录制文件' %><br>
+      <%= file_field_tag :file, accept: "video/mp4, video/mov, video/mpg, video/mpeg" %> <!-- You can also drag and drop files here -->
+    </div>
+  <% end %>
+</div>
+
 <%= form_for [:admin, @live_video] do |f| %>
+
   <div style="width: 80%; margin-bottom: 20px;">
     <%= f.label :title, '*直播标题' %><br>
     <%= f.text_field :title %>
@@ -9,18 +26,27 @@
     <%= f.file_field :cover_image %>
   </div>
   
+  <%= f.hidden_field :video_file, value: f.object.video_file %>
+  
   <div style="width: 80%; margin-bottom: 20px;">
     <%= f.label :body, '*直播简介' %>
     <%= text_area_tag :body,  @live_video.body, name: 'live_video[body]', :class => "redactor", :rows => 40, :cols => 120 %>
   </div>
   
-  <div style="width: 80%; margin-bottom: 20px;">
+  <!-- div style="width: 80%; margin-bottom: 20px;">
     <%= f.label :video_file, '直播录制文件' %><br>
     <%= f.file_field :video_file %>
-  </div>
+  </div -->
   
   <%= f.submit '提交' %>
 <% end %>
+
+<script id="template-upload" type="text/x-tmpl">
+  <div class="upload">
+  {%=o.name%}
+  <div class="progress"><div class="bar" style="width: 0%"></div></div>
+</div>
+</script>
 
 <!--script>
 $(document).ready(
