@@ -86,7 +86,7 @@ module API
           user = authenticate!
           @videos = user.liked_videos
           @videos = @videos.paginate(page: params[:page], per_page: page_size) if params[:page]
-          render_json(@videos, API::V1::Entities::Video)
+          render_json(@videos, API::V1::Entities::Video, { liked: true })
         end # end get
         
       end # end resource user

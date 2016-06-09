@@ -52,6 +52,8 @@ module API
         expose :liked do |model, opts|
           if opts[:opts].blank?
             false
+          elsif opts[:opts][:liked].present?
+            opts[:opts][:liked]
           else
             opts[:opts][:liked_user].blank? ? false : opts[:opts][:liked_user].liked?(model)
           end
