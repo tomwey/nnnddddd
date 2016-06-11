@@ -12,7 +12,7 @@ module API
         end
         get :latest do
           total = params[:size] || 30
-          @bibis = Bilibili.where(stream_id: params[:sid]).order('id asc').limit(total.to_i)
+          @bibis = Bilibili.where(stream_id: params[:sid]).order('id desc').limit(total.to_i)
           render_json(@bibis, API::V1::Entities::Bilibili)
         end # end get
         
@@ -22,7 +22,7 @@ module API
           use :pagination
         end
         get do
-          @bibis = Bilibili.where(stream_id: params[:sid]).order('id asc')
+          @bibis = Bilibili.where(stream_id: params[:sid]).order('id desc')
           @bibis = @bibis.paginate(page: params[:page], per_page: page_size) if params[:page]
           render_json(@bibis, API::V1::Entities::Bilibili)
         end # end get
