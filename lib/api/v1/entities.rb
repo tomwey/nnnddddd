@@ -83,10 +83,20 @@ module API
         expose :online_users_count, as: :view_count
       end
       
+      class Author < Base
+        expose :nickname do |model, opts|
+          model.nickname || model.mobile
+        end
+        expose :avatar do |model, opts|
+          model.avatar.blank? ? "" : model.avatar_url(:large)
+        end
+      end
+      
       class Bilibili < Base
         expose :content, format_with: :null
         expose :stream_id, format_with: :null
-        expose :author_name, as: :author
+        # expose :author_name, as: :author
+        expose :author, using: API::V1::Entities::Author, if: Proc.new { |author| author.present? }
         expose :location, format_with: :null
         expose :created_at, as: :sent_at, format_with: :chinese_datetime
       end
