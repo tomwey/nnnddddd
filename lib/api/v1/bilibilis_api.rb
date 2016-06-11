@@ -30,15 +30,16 @@ module API
         desc "保存弹幕消息"
         params do
           requires :content,   type: String, desc: "弹幕内容，255个字符长度"
-          requires :stream_id, type: String, desc: "视频ID"
-          optional :author_id, type: Integer,desc: "弹幕作者的ID, 如果用户没有登录，那么不提交该参数"
+          requires :stream_id, type: String, desc: "视频流ID"
+          optional :token,     type: String, desc: "用户认证Token"
           optional :location,  type: String, desc: "弹幕作者的位置信息，保留参数，留着以后用"
         end
         post do
           @bili = Bilibili.new(content: params[:content], stream_id: params[:stream_id], location: params[:location])
           
-          if params[:author_id].present?
-            @bili.author_id = params[:author_id].to_i
+          if params[:token].present?
+            u = User.find_by(private_token: params[:token])
+            @bili.author_id = u.id if u.present?
           end
           
           if @bili.save
