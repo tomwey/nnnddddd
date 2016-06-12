@@ -123,11 +123,11 @@ module API
       end
       
       class SentGrant < Grant
-        expose :granted_user, as: :user, using: API::V1::Entities::UserProfile#, if: Proc.new { |u| u.present? }
+        expose :granted_user, as: :user, using: API::V1::Entities::UserProfile, if: Proc.new { |g| g.to.present? }
       end
       
       class ReceiptGrant < Grant
-        expose :granting_user, as: :user, using: API::V1::Entities::UserProfile#, if: Proc.new { |u| u.present? }
+        expose :granting_user, as: :user, using: API::V1::Entities::UserProfile, if: Proc.new { |u| u.from.present? }
       end
       
       # 产品
