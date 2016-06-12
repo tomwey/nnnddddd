@@ -79,6 +79,7 @@ class User < ActiveRecord::Base
   
   # 检查支付密码是否正确
   def is_pay_password?(password)
+    return false if self.pay_password_digest.blank?
     BCrypt::Password.new(self.pay_password_digest) == password
   end
   
