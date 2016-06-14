@@ -22,7 +22,7 @@ module API
           
           user = params[:token].blank? ? nil : User.find_by(private_token: params[:token])
 
-          render_json(@videos, API::V1::Entities::Video, { liked_user: user })
+          render_json(@videos, API::V1::Entities::Video, { user: user })
         end # end get videos
         
         desc "上传视频"

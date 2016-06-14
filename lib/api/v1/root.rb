@@ -19,6 +19,7 @@ module API
       mount API::V1::ViewHistoriesAPI
       mount API::V1::GrantsAPI
       mount API::V1::BilibilisAPI
+      mount API::V1::FavoritesAPI
       # 
       # 配合trix文本编辑器
       # mount API::V1::AttachmentsAPI

@@ -12,9 +12,12 @@ module API
         end
         get do
           user = authenticate!
-          @videos = user.viewed_videos.order('view_histories.id desc')
-          @videos = @videos.paginate(page: params[:page], per_page: page_size) if params[:page]
-          render_json(@videos, API::V1::Entities::Video)
+          # @videos = user.viewed_videos.order('view_histories.id desc')
+          @view_histories = user.view_histories.order('updated_at desc')
+          
+          @view_histories = @view_histories.paginate(page: params[:page], per_page: page_size) if params[:page]
+          
+          render_json(@view_histories, API::V1::Entities::ViewHistory, { user: user })
         end # end get
         
         desc '上传一条观看历史'
@@ -33,13 +36,18 @@ module API
             viewable_type = 'Video'
           end
           
+          klass = viewable_type.classify.constantize
+          
+          viewable = klass.find_by(id: params[:viewable_id])
+          return render_error(4004, '不存在的视频') if viewable.blank?
+          
           vh = ViewHistory.where(user_id: user.id, 
-                                 viewable_id: params[:viewable_id], 
-                                 viewable_type: viewable_type).first
+                                 viewable_id: viewable.id, 
+                                 viewable_type: viewable.class).first
           if vh.blank?
             ViewHistory.create!(user_id: user.id, 
-                               viewable_id: params[:viewable_id],
-                               viewable_type: viewable_type,
+                               viewable_id: viewable.id,
+                               viewable_type: viewable.class,
                                playback_progress: params[:progress])
           else
             vh.playback_progress = params[:progress]
@@ -65,8 +73,8 @@ module API
             viewable_type = 'Video'
           end
           
-          klass = viewable_type.classify.constantize
-          klass.where(user_id: user.id, viewable_id: params[:viewable_id]).delete_all
+          # klass = viewable_type.classify.constantize
+          ViewHistory.where(user_id: user.id, viewable_id: params[:viewable_id], viewable_type: viewable_type).delete_all
           
           render_json_no_data
         end # end post

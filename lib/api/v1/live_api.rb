@@ -26,7 +26,7 @@ module API
           @videos = LiveVideo.where('video_file IS NOT NULL').hot.recent
           @videos = @videos.paginate(page: params[:page], per_page: page_size) if params[:page]
           user = params[:token].blank? ? nil : User.find_by(private_token: params[:token])
-          render_json(@videos, API::V1::Entities::LiveSimpleVideo, { liked_user: user })
+          render_json(@videos, API::V1::Entities::LiveSimpleVideo, { user: user })
         end # end get
       end # end resource
       

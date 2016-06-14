@@ -36,15 +36,21 @@ module API
          end
       end
       
-      # 点播视频
-      class SimpleVideo < Base
+      class Stream < Base
         expose :title, format_with: :null
         expose :body, format_with: :null
         expose :cover_image do |model, opts|
           model.cover_image.blank? ? "" : model.cover_image.url(:large)
         end
+        expose :video_file do |model, opts|
+          if model.class.to_s == 'LiveVideo'
+            model.video_file_url
+          else
+            model.file_url
+          end
+        end
         expose :type
-        expose :view_count, :likes_count, :msg_count
+        expose :view_count, :likes_count, :favorites_count, :msg_count
         expose :stream_id, format_with: :null
         expose :created_on do |model, opts|
           model.created_at.blank? ? "" : model.created_at.strftime('%Y-%m-%d')
@@ -55,32 +61,54 @@ module API
           elsif opts[:opts][:liked].present?
             opts[:opts][:liked]
           else
-            opts[:opts][:liked_user].blank? ? false : opts[:opts][:liked_user].liked?(model)
+            opts[:opts][:user].blank? ? false : opts[:opts][:user].liked?(model)
           end
         end
+        expose :favorited do |model, opts|
+          if opts[:opts].blank?
+            false
+          elsif opts[:opts][:favorited].present?
+            opts[:opts][:favorited]
+          else
+            opts[:opts][:user].blank? ? false : opts[:opts][:user].favorited?(model)
+          end
+        end
+        expose :rtmp_url, if: Proc.new { |v| v.class.to_s == 'LiveVideo' }
+        expose :hls_url,  if: Proc.new { |v| v.class.to_s == 'LiveVideo' }
       end
       
       class Search < Base
         expose :keyword, :search_count
       end
       
-      class Video < SimpleVideo
-        expose :video_file do |model, opts|
-          model.file_url#model.file.blank? ? "" : model.file.url#model.file.url(:mp4)
-        end
+      class Video < Stream
         expose :category, using: API::V1::Entities::Category
         expose :user,     using: API::V1::Entities::UserProfile, if: Proc.new { |video| video.user_id > 0 }
       end
       
-      class LiveSimpleVideo < SimpleVideo
-        expose :video_file do |model, opts|
-          model.video_file_url# model.video_file.blank? ? "" : model.video_file.url#model.file.url(:mp4)
-        end
+      class LiveSimpleVideo < Stream
       end
       
-      class LiveVideo < LiveSimpleVideo
-        expose :rtmp_url, :hls_url
+      class LiveVideo < Stream
         expose :online_users_count, as: :view_count
+      end
+      
+      class ViewHistory < Base
+        expose :play_progress do |model, opts|
+          model.playback_progress.blank? ? 0 : model.playback_progress.to_i
+        end
+        expose :updated_at, as: :viewed_at
+        expose :viewable, as: :video, using: API::V1::Entities::Stream
+      end
+      
+      class Favorite < Base
+        expose :created_at, as: :favorited_at
+        expose :favoriteable, as: :video, using: API::V1::Entities::Stream
+      end
+      
+      class Like < Base
+        expose :created_at, as: :liked_at
+        expose :likeable, as: :video, using: API::V1::Entities::Stream
       end
       
       class Author < Base

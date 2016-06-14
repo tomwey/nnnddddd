@@ -9,6 +9,9 @@ class User < ActiveRecord::Base
   has_many :likes, dependent: :destroy
   has_many :liked_videos, through: :likes, source: :likeable, source_type: 'Video'
   
+  has_many :favorites, dependent: :destroy
+  has_many :favorited_videos, through: :favorites, source: :favoriteable, source_type: 'Video'
+  
   has_many :view_histories, dependent: :destroy
   has_many :viewed_videos, through: :view_histories, source: :viewable, source_type: 'Video'
   has_many :viewed_live_videos, through: :view_histories, source: :viewable, source_type: 'LiveVideo'
@@ -63,6 +66,27 @@ class User < ActiveRecord::Base
     like = likes.where(likeable_type: likeable.class, likeable_id: likeable.id).first
     return false if like.blank?
     like.destroy
+  end
+  
+  # 是否已经收藏
+  def favorited?(favoriteable)
+    return false if favoriteable.blank?
+    count = favorites.where(favoriteable_type: favoriteable.class, favoriteable_id: favoriteable.id).count
+    count > 0
+  end
+  
+  # 收藏
+  def favorite!(favoriteable)
+    return false if favoriteable.blank?
+    Favorite.create!(user_id: self.id, favoriteable_id: favoriteable.id, favoriteable_type: favoriteable.class)
+  end
+  
+  # 取消收藏
+  def cancel_favorite!(favoriteable)
+    return false if favoriteable.blank?
+    favorite = favorites.where(favoriteable_type: favoriteable.class, favoriteable_id: favoriteable.id).first
+    return false if favorite.blank?
+    favorite.destroy
   end
   
   # 设置支付密码

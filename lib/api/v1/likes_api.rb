@@ -16,7 +16,7 @@ module API
             @videos = @videos.paginate page: params[:page], per_page: page_size
           end
           user = params[:token].blank? ? nil : User.find_by(private_token: params[:token])
-          render_json(@videos, API::V1::Entities::Video, { liked_user: user })
+          render_json(@videos, API::V1::Entities::Video, { user: user })
         end # end get liked
       end # end resource
       
@@ -82,11 +82,11 @@ module API
           requires :token, type: String, desc: "用户认证Token"
           use :pagination
         end
-        get :liked_videos do
+        get :likes do
           user = authenticate!
-          @videos = user.liked_videos
-          @videos = @videos.paginate(page: params[:page], per_page: page_size) if params[:page]
-          render_json(@videos, API::V1::Entities::Video, { liked: true })
+          @likes = user.likes.order('id desc')
+          @likes = @likes.paginate(page: params[:page], per_page: page_size) if params[:page]
+          render_json(@likes, API::V1::Entities::Like, { liked: true, user: user })
         end # end get
         
       end # end resource user
