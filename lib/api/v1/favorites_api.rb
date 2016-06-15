@@ -68,9 +68,10 @@ module API
         end
         get :favorites do
           user = authenticate!
-          @favorites = user.favorites.order('id desc')
+          @favorites = user.favorites.includes(:favoriteable).order('id desc')
           @favorites = @favorites.paginate(page: params[:page], per_page: page_size) if params[:page]
-          render_json(@favorites, API::V1::Entities::Favorite, { user: user, favorited: true })
+          @favoriteables = @favorites.map { |f| f.favoriteable }
+          render_json(@favoriteables, API::V1::Entities::Stream, { user: user, favorited: true })
         end # end get
         
       end # end resource user
