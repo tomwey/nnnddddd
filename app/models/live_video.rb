@@ -21,6 +21,15 @@ class LiveVideo < ActiveRecord::Base
     self.update_attribute(:stream_id, SecureRandom.uuid.gsub('-', '')) if self.stream_id.blank?
   end
   
+  # 搜索次数统计
+  def add_search_count
+    self.class.increment_counter(:search_count, self.id)
+  end
+  
+  def self.search(keyword)
+    where('title like :keyword or body like :keyword', keyword: "%#{keyword}%")
+  end
+  
   def state_info
     return '' if state.blank?
     case self.state.to_sym

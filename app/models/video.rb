@@ -7,6 +7,7 @@ class Video < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :category
+  
   has_many :likes, as: :likeable
   has_many :favorites, as: :favoriteable
   has_many :view_histories, as: :viewable
@@ -37,4 +38,9 @@ class Video < ActiveRecord::Base
   def self.search(keyword)
     where('title like :keyword or body like :keyword', keyword: "%#{keyword}%")
   end
+  
+  def add_search_count
+    self.class.increment_counter(:search_count, self.id)
+  end
+  
 end
