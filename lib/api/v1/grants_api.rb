@@ -19,8 +19,8 @@ module API
             return render_error(7001, '支付密码不正确')
           end
           
-          if params[:money].to_i < 1
-            return render_error(7002, '至少需要打赏一分钱')
+          if params[:money] < 0.1
+            return render_error(7002, '至少需要打赏一角钱')
           end
           
           money = params[:money]#.to_i / 100.00
