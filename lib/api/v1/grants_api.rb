@@ -15,7 +15,10 @@ module API
         post do
           user = authenticate!
           
-          unless user.is_pay_password?(params[:pay_password])
+          decode_pass = Base64.decode64(params[:pay_password])
+          pass_secret = decode_pass[0..128]
+          real_pass = decode_pass[128..-1]
+          unless ( pass_secret == Setting.pass_secret && user.is_pay_password?(real_pass) )
             return render_error(7001, '支付密码不正确')
           end
           
