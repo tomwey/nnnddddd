@@ -17,7 +17,9 @@ module API
           
           decode_pass = Base64.decode64(params[:pay_password])
           pass_secret = decode_pass[0..128]
+          puts pass_secret
           real_pass = decode_pass[128..-1]
+          puts real_pass
           unless ( pass_secret == Setting.pass_secret && user.is_pay_password?(real_pass) )
             return render_error(7001, '支付密码不正确')
           end
