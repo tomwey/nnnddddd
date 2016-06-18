@@ -9,7 +9,7 @@ module API
         params do
           requires :token,        type: String,  desc: '用户认证Token'
           requires :pay_password, type: String,  desc: '支付密码'
-          requires :money,        type: Integer, desc: '打赏金额，单位为分，例如100分'
+          requires :money,        type: BigDecimal, desc: '打赏金额，单位为元'
           optional :to,           type: Integer, desc: '被打赏的用户ID，如果是打赏给平台，那么可以不传该参数'
         end
         post do
@@ -23,7 +23,7 @@ module API
             return render_error(7002, '至少需要打赏一分钱')
           end
           
-          money = params[:money].to_i / 100.00
+          money = params[:money]#.to_i / 100.00
           if user.balance < money
             return render_error(7003, '余额不足，请充值后再操作')
           end
