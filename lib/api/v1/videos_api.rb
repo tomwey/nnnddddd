@@ -1,3 +1,4 @@
+require 'qiniu'
 module API
   module V1
     class VideosAPI < Grape::API
@@ -24,6 +25,31 @@ module API
 
           render_json(@videos, API::V1::Entities::Video, { user: user })
         end # end get videos
+        
+        desc "获取上传视频的Token信息"
+        params do
+          requires :token, type: String,  desc: "用户认证Token"
+        end
+        get :upload_info do
+          authenticate!
+          
+          bucket = 'zgnytv'
+          filename = "#{SecureRandom.uuid}.mp4"
+          key = "uploads/video/" + filename
+          
+          #构建上传策略
+          put_policy = Qiniu::Auth::PutPolicy.new(
+              bucket,      # 存储空间
+              key,     # 最终资源名，可省略，即缺省为“创建”语义，设置为nil为普通上传 
+              3600    #token过期时间，默认为3600s
+          )
+
+          #生成上传 Token
+          uptoken = Qiniu::Auth.generate_uptoken(put_policy)
+          
+          { token: uptoken, key: key, filename: filename }
+          
+        end # end token
         
         desc "上传视频"
         params do 
