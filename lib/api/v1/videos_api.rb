@@ -28,25 +28,26 @@ module API
         desc "上传视频"
         params do 
           requires :token,       type: String,  desc: "用户认证Token"
-          optional :category_id, type: Integer, desc: "类别ID"
+          # optional :category_id, type: Integer, desc: "类别ID"
           requires :title,       type: String,  desc: "视频标题"
           optional :body,        type: String,  desc: "视频简介"
-          requires :video,       type: Rack::Multipart::UploadedFile, desc: "视频二进制文件, 视频格式为：mp4,mov,3gp,avi,mpeg"
+          # requires :video,       type: Rack::Multipart::UploadedFile, desc: "视频二进制文件, 视频格式为：mp4,mov,3gp,avi,mpeg"
           requires :cover_image, type: Rack::Multipart::UploadedFile, desc: "图片二进制文件, 视频格式为：jpg,jpeg,gif,png"
+          requires :filename,    type: String,  desc: "视频文件名" 
         end
         post do
           user = authenticate!
           
-          category_id = params[:category_id].blank? ? 3 : params[:category_id].to_i
-          category = Category.find_by(id: category_id)
+          # category_id = params[:category_id].blank? ? 3 : params[:category_id].to_i
+          category = Category.find_by(name: '拍客')
           if category.blank?
             return render_error(4004, '没有该类别')
           end
           
           @video = Video.new(user_id: user.id, 
                              title: params[:title], 
-                             file: params[:video], 
-                             category_id: params[:category_id],
+                             file: params[:filename], 
+                             category_id: category.id,
                              cover_image: params[:cover_image],
                              body: params[:body])
           if @video.save
