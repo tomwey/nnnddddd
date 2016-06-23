@@ -58,6 +58,26 @@ module API
       
       resource :user, desc: "用户接口" do
         
+        desc "获取某个视频的社交状态"
+        params do
+          requires :token, type: String, desc: "用户认证Token"
+          requires :type,  type: Integer, desc: "视频类型，值为1或者2，1表示直播，2表示点播"
+          requires :vid,   type: Integer, desc: "视频的ID，注意：不是stream_id，而是id字段的值"
+        end
+        get :social_state do
+          user = authenticate!
+          if params[:type] && params[:type].to_i == 1
+            stream_type = 'LiveVideo'
+          else
+            stream_type = 'Video'
+          end
+          
+          klass = stream_type.classify.constantize
+          stream = klass.find_by(id: params[:vid])
+          
+          { liked: user.liked?(stream), favorited: user.favorited?(stream) }
+        end # end get social state
+        
         desc "获取个人资料"
         params do
           requires :token, type: String, desc: "用户认证Token"
