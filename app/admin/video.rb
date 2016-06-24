@@ -42,8 +42,50 @@ index do
   column '所属用户', sortable: false do |video|
     video.user_id == -1 ? '系统' : video.user.try(:nickname)
   end
+  column '审核状态', sortable: false do |video|
+    if video.approved
+      '已审核'
+    else
+      '未审核'
+    end
+  end
   column :sort
-  actions
+  # actions
+  actions defaults: false do |video|
+    if video.approved
+      item '取消审核', cancel_approve_admin_video_path(video), method: :put
+    else
+      item '确认审核', approve_admin_video_path(video), method: :put
+    end
+    item " 编辑", edit_admin_video_path(video)
+    item " 删除", admin_video_path(video), method: :delete, data: { confirm: '你确定吗？' }
+  end
+end
+
+# 批量审核
+batch_action :approve do |ids|
+  batch_action_collection.find(ids).each do |video|
+    video.approve!
+  end
+  redirect_to collection_path, alert: '审核通过'
+end
+
+# 批量审核不通过
+batch_action :cancel_approve do |ids|
+  batch_action_collection.find(ids).each do |video|
+    video.cancel_approve!
+  end
+  redirect_to collection_path, alert: '取消审核'
+end
+
+member_action :approve, method: :put do
+  resource.approve!
+  redirect_to collection_path, notice: "已审核"
+end
+
+member_action :cancel_approve, method: :put do
+  resource.cancel_approve!
+  redirect_to collection_path, notice: "已取消"
 end
 
 show do |video|

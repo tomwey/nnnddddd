@@ -8,9 +8,9 @@ class Video < ActiveRecord::Base
   belongs_to :user
   belongs_to :category
   
-  has_many :likes, as: :likeable
-  has_many :favorites, as: :favoriteable
-  has_many :view_histories, as: :viewable
+  has_many :likes, dependent: :destroy, as: :likeable
+  has_many :favorites, dependent: :destroy, as: :favoriteable
+  has_many :view_histories, dependent: :destroy, as: :viewable
   
   # mount_uploader :file, VideoUploader
   mount_uploader :cover_image, CoverImageUploader
@@ -19,6 +19,7 @@ class Video < ActiveRecord::Base
   scope :recent, -> { order('id desc') }
   scope :hot,    -> { order('view_count desc') }
   scope :more_liked, -> { order('likes_count desc') }
+  scope :approved, -> { where(approved: true) }
   
   before_create :generate_stream_id
   def generate_stream_id
@@ -41,6 +42,16 @@ class Video < ActiveRecord::Base
   
   def add_search_count
     self.class.increment_counter(:search_count, self.id)
+  end
+  
+  def approve!
+    self.approved = true
+    self.save!
+  end
+  
+  def cancel_approve!
+    self.approved = false
+    self.save!
   end
   
 end

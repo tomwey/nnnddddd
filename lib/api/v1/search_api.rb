@@ -24,7 +24,12 @@ module API
           klass = searchable_type.classify.constantize
           
           size = params[:size].blank? ? 8 : params[:size].to_i
-          @searchables = klass.order('search_count desc').limit(size)
+          
+          if type == 1
+            @searchables = klass.order('search_count desc').limit(size)
+          else
+            @searchables = klass.approved.order('search_count desc').limit(size)
+          end
           
           user = params[:token].blank? ? nil : User.find_by(private_token: params[:token])
           render_json(@searchables, API::V1::Entities::Stream, { user: user })
@@ -81,7 +86,12 @@ module API
           
           klass = searchable_type.classify.constantize
           
-          @searchables = klass.search(keyword)
+          if type == 1
+            @searchables = klass.search(keyword)
+          else
+            @searchables = klass.approved.search(keyword)
+          end
+          
           if params[:page]
             @searchables = @searchables.paginate page: params[:page], per_page: page_size
           end

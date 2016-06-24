@@ -84,6 +84,7 @@ module API
       class Video < Stream
         expose :category, using: API::V1::Entities::Category
         expose :user,     using: API::V1::Entities::UserProfile, if: Proc.new { |video| video.user_id > 0 }
+        expose :approved
       end
       
       class LiveSimpleVideo < Stream

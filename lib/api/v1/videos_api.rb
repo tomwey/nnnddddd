@@ -13,7 +13,7 @@ module API
           use :pagination
         end
         get do
-          @videos = Video.sorted.hot.recent
+          @videos = Video.approved.sorted.hot.recent
           
           if params[:cid]
             @videos = @videos.where(category_id: params[:cid])
@@ -93,12 +93,29 @@ module API
                              category_id: category.id,
                              cover_image: params[:cover_image],
                              body: params[:body])
+          # 用户上传的视频默认是需要审核的
+          @video.approved = false
+          
           if @video.save
             render_json(@video, API::V1::Entities::Video)
           else
             render_error(6001, @video.errors.full_messages.join(','))
           end
         end # end post
+        
+        desc "删除一条用户上传的视频"
+        params do
+          requires :token, type: String,  desc: "用户认证Token"
+          requires :vid,   type: Integer, desc: "视频ID, 字段id对应的值"
+        end
+        post :delete do
+          user = authenticate!
+          
+          @videos = Video.where(user_id: user.id, id: params[:vid])
+          @videos.destroy_all
+          
+          render_json_no_data
+        end # end post delete
         
       end # end resource
     end
