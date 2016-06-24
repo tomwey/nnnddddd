@@ -26,6 +26,23 @@ module API
           render_json(@videos, API::V1::Entities::Video, { user: user })
         end # end get videos
         
+        desc "获取用户上传的视频"
+        params do 
+          requires :token, type: String,  desc: "用户认证Token"
+          use :pagination
+        end
+        get :uploaded do
+          user = authenticate!
+          
+          category = Category.find_by(name: '拍客')
+          @videos = Video.where(category_id: category.id, user_id: user.id).order('id desc')
+          
+          # 分页
+          @videos = @videos.paginate(page: params[:page], per_page: page_size) if params[:page]
+          
+          render_json(@videos, API::V1::Entities::Video, { user: user })
+        end # end get
+        
         desc "获取上传视频的Token信息"
         params do
           requires :token, type: String,  desc: "用户认证Token"
