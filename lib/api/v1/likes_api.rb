@@ -40,6 +40,14 @@ module API
           klass = likeable_type.classify.constantize
           
           likeable = klass.find_by(id: params[:likeable_id])
+          
+          return render_error(4001, '视频不存在或已经删除') if likeable.blank?
+          
+          # 用户不能赞未审核通过的视频
+          if likeable_type == 'Video' && likeable.approved == false
+            return render_error(3001, '视频审核未通过，不能点赞')
+          end
+          
           return render_error(3001, '您已经点赞过了') if user.liked?(likeable)
           
           if user.like!(likeable)
@@ -68,6 +76,8 @@ module API
           klass = likeable_type.classify.constantize
           
           likeable = klass.find_by(id: params[:likeable_id])
+          return render_error(4001, '视频不存在或已经删除') if likeable.blank?
+          
           return render_error(3001, '您还未点赞,不能取消点赞') unless user.liked?(likeable)
           
           if user.cancel_like!(likeable)

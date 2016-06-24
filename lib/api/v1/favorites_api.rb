@@ -24,6 +24,18 @@ module API
           klass = favorite_type.classify.constantize
           
           favoriteable = klass.find_by(id: params[:favorite_id])
+          return render_error(4001, '该视频不存在或已经被删除') if favoriteable.blank?
+          
+          # 不能收藏自己的视频
+          if favorite_type == 'Video' && user.id == favoriteable.user_id.to_i
+            return render_error(3001, '您不能收藏自己的视频')
+          end
+          
+          # 未通过审核的视频不能收藏
+          if favorite_type == 'Video' && favoriteable.approved == false
+            return render_error(3001, '视频未审核通过，不能收藏')
+          end
+          
           return render_error(3001, '您已经收藏过了') if user.favorited?(favoriteable)
           
           if user.favorite!(favoriteable)
@@ -52,6 +64,7 @@ module API
           klass = favorite_type.classify.constantize
           
           favoriteable = klass.find_by(id: params[:favorite_id])
+          return render_error(4001, '该视频不存在或已经被删除') if favoriteable.blank?
           return render_error(3001, '您还未收藏,不能取消') unless user.favorited?(favoriteable)
           
           if user.cancel_favorite!(favoriteable)
