@@ -43,6 +43,19 @@ module API
           end
           
           if @bili.save
+            video = Video.find_by(stream_id: params[:stream_id])
+            if video.present?
+              # 添加统计数据
+              video.msg_count += 1
+              video.save
+            else
+              lv = LiveVideo.find_by(stream_id: params[:stream_id])
+              if lv.present?
+                # 添加统计数据
+                lv.msg_count += 1
+                lv.save
+              end
+            end
             render_json(@bili, API::V1::Entities::Bilibili)
           else
             render_error(5001, @bili.errors.full_messages.join(','))
