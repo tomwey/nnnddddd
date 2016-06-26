@@ -26,6 +26,13 @@
     <%= f.file_field :cover_image %>
   </div>
   
+  <% if not f.object.new_record? %>
+  <div style="width: 80%; margin-bottom: 20px;">
+    <%= f.label :likes_count, '点赞数' %><br>
+    <%= f.text_field :likes_count %>
+  </div>
+  <% end %>
+  
   <%= f.hidden_field :video_file, value: f.object.video_file %>
   
   <div style="width: 80%; margin-bottom: 20px;">
@@ -39,6 +46,7 @@
   </div -->
   
   <%= f.submit '提交' %>
+
 <% end %>
 
 <script id="template-upload" type="text/x-tmpl">

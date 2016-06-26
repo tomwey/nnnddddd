@@ -5,7 +5,7 @@ menu priority: 4, label: '直播'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :title, :cover_image, :body, :video_file #:stream_id
+permit_params :title, :cover_image, :body, :video_file, :likes_count #:stream_id
 #
 # or
 #
@@ -40,7 +40,7 @@ index do
   column '直播流ID', sortable: false do |lv|
     lv.stream_id
   end
-  column '人数统计' do |lv| raw("围观人数：#{lv.view_count}<br>在线人数：#{lv.online_users_count}<br>弹幕数：#{lv.msg_count}<br>收藏数：#{lv.likes_count}")
+  column '人数统计' do |lv| raw("围观人数：#{lv.view_count}<br>在线人数：#{lv.online_users_count}<br>弹幕数：#{lv.msg_count}<br>点赞数：#{lv.likes_count}")
   end
   column '直播相关', columns: 3, sortable: false do |live_video|
     raw("RTMP推流地址：#{live_video.rtmp_push_url}<br>

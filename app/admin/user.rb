@@ -15,7 +15,7 @@ menu priority: 2, label: '用户'
 #   permitted
 # end
 
-actions :index
+actions :index, :edit, :update
 
 filter :nickname
 filter :mobile
@@ -38,8 +38,14 @@ index do
     u.avatar.blank? ? "" : image_tag(u.avatar.url(:small))
   end
   column :mobile, sortable: false
-  column 'Token', sortable: false do |u|
-    u.private_token
+  # column 'Token', sortable: false do |u|
+  #   u.private_token
+  # end
+  column '余额' do |u|
+    u.balance
+  end
+  column '打赏' do |u|
+    raw("打赏别人：#{u.sent_money}元<br>收到打赏：#{u.receipt_money}元")
   end
   column :verified, sortable: false
   column :created_at
@@ -50,6 +56,7 @@ index do
     else
       item "启用", unblock_admin_user_path(u), method: :put
     end
+    item " 充值", edit_admin_user_path(u)
   end
 end
 
@@ -77,6 +84,13 @@ end
 member_action :unblock, method: :put do
   resource.unblock!
   redirect_to admin_users_path, notice: "取消禁用"
+end
+
+form do |f|
+  f.inputs "用户充值" do
+    f.input :balance, label: '余额', placeholder: '单位为元'
+  end
+  f.actions
 end
 
 end

@@ -5,7 +5,7 @@ menu priority: 5, label: '视频'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :title, :file, :cover_image, :body, :category_id#, :stream_id
+permit_params :title, :file, :cover_image, :body, :category_id, :likes_count#, :stream_id
 #
 # or
 #
@@ -34,7 +34,7 @@ index do
   end
   column :stream_id, sortable: false
   column '人数统计', sortable: false do |video|
-    raw("观看人数：#{video.view_count}<br>弹幕数：#{video.msg_count}<br>收藏数：#{video.likes_count}")
+    raw("观看人数：#{video.view_count}<br>弹幕数：#{video.msg_count}<br>点赞数：#{video.likes_count}")
   end
   column '所属类别', sortable: false do |video|
     video.category.try(:name)
