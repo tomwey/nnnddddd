@@ -21,6 +21,7 @@ module API
         end
         expose :sent_money, format_with: :money_format
         expose :receipt_money, format_with: :money_format
+        expose :balance, format_with: :money_format
       end
       
       # 用户详情

@@ -14,6 +14,7 @@
       bilibili: '弹幕'
       grant: '打赏'
       search: '搜索记录'
+      page: '文档'
     attributes:
       user:
         mobile: "手机"
