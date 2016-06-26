@@ -20,6 +20,7 @@ module API
       mount API::V1::GrantsAPI
       mount API::V1::BilibilisAPI
       mount API::V1::FavoritesAPI
+      mount API::V1::PayAPI
       # 
       # 配合trix文本编辑器
       # mount API::V1::AttachmentsAPI

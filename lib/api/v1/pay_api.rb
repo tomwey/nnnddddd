@@ -4,7 +4,7 @@ module API
       
       helpers API::SharedParams
       
-      resource :payout, desc: "提现接口" do
+      resource :payouts, desc: "提现接口" do
         desc '申请提现'
         params do
           requires :token, type: String,     desc: "用户Token"
