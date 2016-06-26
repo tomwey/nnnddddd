@@ -36,6 +36,10 @@ class Video < ActiveRecord::Base
     Qiniu::Auth.authorize_download_url(origin_file_url)
   end
   
+  def video_file_url
+    file_url
+  end
+  
   def self.search(keyword)
     where('title like :keyword or body like :keyword', keyword: "%#{keyword}%")
   end

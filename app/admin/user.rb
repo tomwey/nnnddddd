@@ -5,7 +5,7 @@ menu priority: 2, label: '用户'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-# permit_params :list, :of, :attributes, :on, :model
+# permit_params :balance
 #
 # or
 #
@@ -14,6 +14,25 @@ menu priority: 2, label: '用户'
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
+
+controller do
+  def update
+    money = params[:user][:money].to_f
+    resource.balance += money
+    
+    if resource.save
+      # 记录交易明细
+      PayHistory.create!(pay_name: '充值', 
+                         pay_type: PayHistory::PAY_TYPE_PAY_IN, 
+                         money: money,
+                         user_id: resource.id)
+                         
+      redirect_to admin_users_path
+    else
+      render :edit
+    end
+  end
+end
 
 actions :index, :edit, :update
 
@@ -86,9 +105,19 @@ member_action :unblock, method: :put do
   redirect_to admin_users_path, notice: "取消禁用"
 end
 
+# member_action :pay_in, label: '充值', method: [:get, :put] do
+#   if request.put?
+#     resource.balance += params[:money]
+#     resource.save!
+#     head :ok
+#   else
+#     render :pay_in
+#   end
+# end
+
 form do |f|
-  f.inputs "用户充值" do
-    f.input :balance, label: '余额', placeholder: '单位为元'
+  f.inputs '用户充值' do
+    f.input :money, value: 0.0, label: '充值金额', placeholder: '输入当前要充值的金额，单位为元'
   end
   f.actions
 end

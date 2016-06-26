@@ -1,6 +1,6 @@
 ActiveAdmin.register Like do
 
-menu priority: 6, label: '收藏'
+menu priority: 6
 
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
@@ -27,7 +27,7 @@ index do
   column '视频', sortable: false do |like|
     raw("
     <video height=\"120\" controls >
-      <source src=\"#{like.likeable.file_url}\" type=\"video/mp4\">
+      <source src=\"#{like.likeable.video_file_url}\" type=\"video/mp4\">
       Your browser doesn't support HTML5 video tag.
     </video>")
   end

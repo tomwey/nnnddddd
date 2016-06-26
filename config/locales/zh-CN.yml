@@ -8,7 +8,8 @@
       site_config: "站点配置"
       feedback: "意见反馈"
       video: "视频"
-      like: "用户收藏"
+      like: "点赞"
+      favorite: '收藏'
       live_video: "直播"
       live_provider: "直播提供者"
       bilibili: '弹幕'

@@ -1,7 +1,7 @@
 class Payout < ActiveRecord::Base
   belongs_to :user
   
-  validates :money, :card_no, :user_id
+  validates :money, :card_no, :user_id, presence: true
   validates_uniqueness_of :card_no
   
   after_create :record_pay_history
@@ -15,6 +15,11 @@ class Payout < ActiveRecord::Base
                        pay_type: PayHistory::PAY_TYPE_PAY_OUT, 
                        money: money,
                        user_id: user.id)
+  end
+  
+  def pay!
+    self.payed_at = Time.now
+    self.save!
   end
   
 end
