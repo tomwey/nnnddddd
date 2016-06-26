@@ -107,9 +107,9 @@ module API
         expose :pay_name, format_with: :null
         expose :created_at, format_with: :chinese_datetime
         expose :pay_money do |model, opts|
-          if model.pay_type == PAY_TYPE_PAY_IN
+          if model.pay_type == 0
             "+ ¥ #{model.money}"
-          elsif model.pay_type == PAY_TYPE_PAY_OUT
+          elsif model.pay_type == 1
             "- ¥ #{model.money}"
           else
             if model.pay_name == '打赏别人'
