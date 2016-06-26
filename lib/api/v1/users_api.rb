@@ -171,6 +171,9 @@ module API
           return render_error(1003, '密码太短，至少为6位') if params[:pay_password].length < 6
           
           if user.update_pay_password!(params[:pay_password])
+            # 激活当前验证码
+            auth_code.update_attribute(:activated_at, Time.now)
+            
             render_json_no_data
           else
             render_error(3003, "设置支付密码失败")
