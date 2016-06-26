@@ -19,7 +19,7 @@ module API
             return render_error(7001, "余额至少为#{pay_limit}元才能提现")
           end
           
-          if params[:money] > user.balance
+          if params[:money].to_f > user.balance
             return render_error(7001, "余额不足，最多只能提现#{user.balance}元")
           end
           
@@ -30,10 +30,10 @@ module API
         end # end post payout
       end # end resource
       
-      resource :pay_histories, '交易明细' do
+      resource :pay_histories, desc: '交易明细' do
         desc '获取交易明细'
         params do
-          requires :token, type: String,     desc: "用户Token"
+          requires :token, type: String,  desc: "用户Token"
           use :pagination
         end
         get do
