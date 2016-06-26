@@ -103,6 +103,24 @@ module API
         expose :viewable, as: :video, using: API::V1::Entities::Stream
       end
       
+      class PayHistory < Base
+        expose :pay_name, format_with: :null
+        expose :created_at, format_with: :chinese_datetime
+        expose :pay_money do |model, opts|
+          if model.pay_type == PAY_TYPE_PAY_IN
+            "+ ¥ #{model.money}"
+          elsif model.pay_type == PAY_TYPE_PAY_OUT
+            "- ¥ #{model.money}"
+          else
+            if model.pay_name == '打赏别人'
+              "- ¥ #{model.money}"
+            else
+              "+ ¥ #{model.money}" # 收到打赏
+            end
+          end
+        end
+      end
+      
       class Favorite < Base
         expose :created_at, as: :favorited_at
         expose :favoriteable, as: :video, using: API::V1::Entities::Stream

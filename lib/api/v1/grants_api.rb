@@ -38,9 +38,21 @@ module API
             
             # 减去打赏者的余额
             user.grant_money!(-money)
+            # 记录交易明细
+            PayHistory.create!(pay_name: '打赏别人', 
+                               pay_type: PayHistory::PAY_TYPE_GRANT, 
+                               money: money,
+                               user_id: user.id)
             
             # 增加被打赏者的余额
             to_user.grant_money!(money) if to_user.present?
+            if to_user.present?
+              # 记录交易明细
+              PayHistory.create!(pay_name: '收到打赏', 
+                                 pay_type: PayHistory::PAY_TYPE_GRANT, 
+                                 money: money,
+                                 user_id: to_user.id)
+            end
             
           end
           render_json_no_data

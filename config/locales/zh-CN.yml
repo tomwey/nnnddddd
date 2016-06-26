@@ -15,6 +15,8 @@
       grant: '打赏'
       search: '搜索记录'
       page: '文档'
+      payout: '提现'
+      pay_history: '交易明细'
     attributes:
       user:
         mobile: "手机"
@@ -73,6 +75,17 @@
         likes_count: '收藏人数'
         msg_count: '弹幕数'
         video_file: '直播录制文件'
+      payout:
+        money: '提现金额'
+        card_no: '提现账号'
+        fee: '手续费'
+        #payed: '是否支付'
+        payed_at: '支付时间'
+      pay_history:
+        money: '金额'
+        fee: '手续费'
+        pay_name: '交易名称'
+        pay_type: '交易类型'
         
       live_provider:
         rtmp_push_url: '推流域名'
