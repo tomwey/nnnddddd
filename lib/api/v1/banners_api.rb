@@ -3,8 +3,13 @@ module API
     class BannersAPI < Grape::API
       
       resource :banners, desc: "广告接口" do
+        desc '获取广告列表'
+        params do
+          optional :size,  type: Integer, desc: '获取的广告条数'
+        end
         get do
-          @banners = Banner.sorted.recent.limit(5)
+          size = params[:size].blank? ? 5 : params[:size].to_i 
+          @banners = Banner.sorted.recent.limit(size)
           render_json(@banners, API::V1::Entities::Banner)
         end
       end # end resource
