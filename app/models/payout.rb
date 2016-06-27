@@ -1,7 +1,7 @@
 class Payout < ActiveRecord::Base
   belongs_to :user
   
-  validates :money, :card_no, :user_id, presence: true
+  validates :money, :card_no, :card_name, :user_id, presence: true
   validates_uniqueness_of :card_no
   
   after_create :record_pay_history

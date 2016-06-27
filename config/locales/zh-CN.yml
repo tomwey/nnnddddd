@@ -79,6 +79,7 @@
       payout:
         money: '提现金额'
         card_no: '提现账号'
+        card_name: '账号姓名'
         fee: '手续费'
         #payed: '是否支付'
         payed_at: '支付时间'

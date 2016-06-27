@@ -10,6 +10,7 @@ module API
           requires :token, type: String,     desc: "用户Token"
           requires :money, type: BigDecimal, desc: '提现金额，单位为元'
           requires :card_no, type: String,   desc: "提现账号"
+          requires :card_name, type: String, desc: "账号姓名"
         end
         post do
           user = authenticate!
@@ -24,7 +25,7 @@ module API
           end
           
           # 创建一条提现申请
-          Payout.create!(card_no: params[:card_no], money: params[:money], user_id: user.id)
+          Payout.create!(card_name: params[:card_name], card_no: params[:card_no], money: params[:money], user_id: user.id)
           
           render_json_no_data
         end # end post payout

@@ -10,6 +10,7 @@ index do
   column '用户', sortable: false do |ph|
     ph.user.try(:nickname) || ph.user.try(:mobile)
   end
+  column :card_name, sortable: false
   column :card_no, sortable: false
   column :money
   column '是否支付', sortable: false do |payout|
