@@ -118,6 +118,25 @@ module API
         end # end post delete
         
       end # end resource
+      
+      resource :streams, desc: '获取某个视频的详情，适用于广告' do
+        desc '获取某个视频的详情'
+        params do 
+          optional :token,     type: String, desc: '用户Token'
+          # requires :stream_id, type: String, desc: '视频流ID'
+        end
+        get '/:stream_id' do
+          
+          @stream = Video.find_by(stream_id: params[:stream_id])
+          if @stream.blank?
+            @stream = LiveVideo.find_by(stream_id: params[:stream_id])
+          end
+          
+          user = params[:token].blank? ? nil : User.find_by(private_token: params[:token])
+
+          render_json(@stream, API::V1::Entities::Stream, { user: user })
+        end # end get
+      end # end resource
     end
   end
 end
