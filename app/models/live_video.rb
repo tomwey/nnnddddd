@@ -137,7 +137,7 @@ class LiveVideo < ActiveRecord::Base
     # }
     # RestClient.post "http://rest.yunba.io:8080", params.to_json, :content_type => :json, :accept => :json 
     # 奥点云消息
-    RestClient.post "http://api.dms.aodianyun.com/v1/messages/u#{stream_id}", { 'body': $redis.get(stream_id) }.to_json, :content_type => :json, :accept => :json, :Authorization => "dms #{SiteConfig.ady_skey}"
+    RestClient.post "http://api.dms.aodianyun.com/v1/messages/u#{stream_id}", { body: $redis.get(stream_id) }.to_json, :content_type => :json, :accept => :json, :Authorization => "dms #{SiteConfig.ady_skey}"
     
     # curl -l -H "Content-type: application/json" -X POST -d '{"method":"publish", "appkey":"XXXXXXXXXXXXXXXXXXXXXXX", "seckey":"sec-XXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "topic":"news", "msg":"good news"}' http://rest.yunba.io:8080
     
