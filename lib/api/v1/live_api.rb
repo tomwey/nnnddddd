@@ -46,9 +46,22 @@ module API
         end
         get :play do
           
+          # 记录观看数
+          video = Video.find_by(stream_id: params[:sid])
+          type = 2
+          if video.blank?
+            lv = LiveVideo.find_by(stream_id: params[:sid])
+            if not lv.blank?
+              type = 1
+              lv.update_attribute(:view_count, lv.view_count + 1)
+            end
+          else
+            video.update_attribute(:view_count, video.view_count + 1)
+          end
+          
           PlayStat.where(
             stream_id: params[:sid],
-            stream_type: 2,
+            stream_type: type,
             udid: params[:udid],
             device_model: params[:m],
             os_version: params[:osv],
