@@ -130,8 +130,8 @@ class LiveVideo < ActiveRecord::Base
     # $mqtt.publish(stream_id, $redis.get(stream_id))
     params = {
       'method' => 'publish',
-      'appkey' => '',
-      'seckey' => '',
+      'appkey' => SiteConfig.yb_app_key,
+      'seckey' => SiteConfig.yb_secret_key,
       'topic'  => stream_id,
       'msg'    => $redis.get(stream_id)
     }
