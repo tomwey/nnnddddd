@@ -1,4 +1,5 @@
 require 'qiniu'
+require 'rest-client'
 class LiveVideo < ActiveRecord::Base
   validates :title, :body, :cover_image, presence: true
   
@@ -126,7 +127,17 @@ class LiveVideo < ActiveRecord::Base
     end
     
     # 通知消息
-    $mqtt.publish(stream_id, $redis.get(stream_id))
+    # $mqtt.publish(stream_id, $redis.get(stream_id))
+    params = {
+      'method' => 'publish',
+      'appkey' => '',
+      'seckey' => '',
+      'topic'  => stream_id,
+      'msg'    => $redis.get(stream_id)
+    }
+    RestClient.post "http://rest.yunba.io:8080", params.to_json, :content_type => :json, :accept => :json 
+    
+    # curl -l -H "Content-type: application/json" -X POST -d '{"method":"publish", "appkey":"XXXXXXXXXXXXXXXXXXXXXXX", "seckey":"sec-XXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "topic":"news", "msg":"good news"}' http://rest.yunba.io:8080
     
     # 每新增10个用户存一次数据库
     if count - self.view_count > 10
