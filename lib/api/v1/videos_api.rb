@@ -34,7 +34,7 @@ module API
         get :uploaded do
           user = authenticate!
           
-          category = Category.find_by(name: '拍客')
+          category = Category.current_user_upload
           @videos = Video.where(category_id: category.id, user_id: user.id).order('id desc')
           
           # 分页
@@ -82,7 +82,7 @@ module API
           user = authenticate!
           
           # category_id = params[:category_id].blank? ? 3 : params[:category_id].to_i
-          category = Category.find_by(name: '拍客')
+          category = Category.current_user_upload
           if category.blank?
             return render_error(4004, '没有该类别')
           end

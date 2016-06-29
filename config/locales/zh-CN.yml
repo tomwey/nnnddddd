@@ -42,6 +42,7 @@
         name: "类别名"
         icon: "Icon"
         sort: "显示顺序"
+        user_upload: '用户上传'
       banner:
         image: "广告图片"
         link: "链接"
