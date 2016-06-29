@@ -106,12 +106,15 @@ module API
         desc "删除一条用户上传的视频"
         params do
           requires :token, type: String,  desc: "用户认证Token"
-          requires :vid,   type: Integer, desc: "视频ID, 字段id对应的值"
+          optional :vid,   type: Integer, desc: "视频ID, 字段id对应的值，如果不传该字段，默认删除所有的数据"
         end
         post :delete do
           user = authenticate!
           
-          @videos = Video.where(user_id: user.id, id: params[:vid])
+          @videos = Video.where(user_id: user.id)
+          if params[:vid]
+            @videos = @videos.where(id: params[:vid])
+          end
           @videos.destroy_all
           
           render_json_no_data

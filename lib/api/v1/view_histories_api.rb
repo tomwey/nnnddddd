@@ -61,7 +61,7 @@ module API
         desc '删除一条观看历史'
         params do
           requires :token, type: String, desc: 'Token, 必须'
-          requires :viewable_id, type: Integer, desc: '视频ID'
+          optional :viewable_id, type: Integer, desc: '视频ID，如果不传该字段，默认删除所有的数据'
           optional :type, type: Integer, desc: '类别，如果为1表示是直播视频，为2是点播视频，默认为点播'
         end
         post :delete do
@@ -74,7 +74,11 @@ module API
           end
           
           # klass = viewable_type.classify.constantize
-          ViewHistory.where(user_id: user.id, viewable_id: params[:viewable_id], viewable_type: viewable_type).delete_all
+          @histories = ViewHistory.where(user_id: user.id)
+          if params[:viewable_id]
+            @histories = @histories.where(viewable_id: params[:viewable_id], viewable_type: viewable_type)
+          end
+          @histories.delete_all
           
           render_json_no_data
         end # end post
