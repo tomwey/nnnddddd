@@ -27,7 +27,7 @@ index do
   column '视频', sortable: false do |like|
     raw("
     <video height=\"120\" controls >
-      <source src=\"#{like.likeable.video_file_url}\" type=\"video/mp4\">
+      <source src=\"#{like.likeable.try(:video_file_url)}\" type=\"video/mp4\">
       Your browser doesn't support HTML5 video tag.
     </video>")
   end
