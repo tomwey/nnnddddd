@@ -6,9 +6,15 @@ module API
       
       resource :live, desc: '直播相关接口' do
         desc "获取直播列表"
+        params do
+          optional :token, type: String, desc: 'Token'
+        end
         get :channels do
           @videos = LiveVideo.living.recent
-          render_json(@videos, API::V1::Entities::LiveVideo)
+          
+          user = params[:token].blank? ? nil : User.find_by(private_token: params[:token])
+          
+          render_json(@videos, API::V1::Entities::LiveVideo, { user: user })
         end
         
         desc "获取最新的直播"
@@ -23,7 +29,7 @@ module API
           use :pagination
         end
         get :hot_videos do
-          @videos = LiveVideo.where('video_file IS NOT NULL').hot.recent
+          @videos = LiveVideo.closed.where('video_file IS NOT NULL').hot.recent
           @videos = @videos.paginate(page: params[:page], per_page: page_size) if params[:page]
           user = params[:token].blank? ? nil : User.find_by(private_token: params[:token])
           render_json(@videos, API::V1::Entities::LiveSimpleVideo, { user: user })
