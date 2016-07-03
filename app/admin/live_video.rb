@@ -41,7 +41,7 @@ index do
     lv.stream_id
   end
   column '人数统计' do |lv|
-    if lv.state.to_sym == :closed and lv.video_file.present?
+    if lv.state.to_sym == :closed or lv.video_file.present?
       # 热门的直播
       raw("直播结束 => <br>围观人数：#{lv.view_count}<br>弹幕数：#{lv.msg_count}<br>点赞数：#{lv.likes_count}")
     elsif lv.state.to_sym == :living and lv.video_file.blank?
