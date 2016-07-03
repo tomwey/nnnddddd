@@ -117,7 +117,8 @@ class LiveVideo < ActiveRecord::Base
   
   def update_online_user_count(n)
     if $redis.get(stream_id).blank?
-      $redis.set(stream_id, self.view_count)
+      #$redis.set(stream_id, self.view_count)
+      $redis.set(stream_id, 0)
     end
     
     count = $redis.get(stream_id).to_i
@@ -142,14 +143,14 @@ class LiveVideo < ActiveRecord::Base
     # curl -l -H "Content-type: application/json" -X POST -d '{"method":"publish", "appkey":"XXXXXXXXXXXXXXXXXXXXXXX", "seckey":"sec-XXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "topic":"news", "msg":"good news"}' http://rest.yunba.io:8080
     
     # 每新增10个用户存一次数据库
-    if count - self.view_count > 10
-      self.update_attribute(:view_count, count)
-    end
+    # if count - self.view_count > 10
+    #   self.update_attribute(:view_count, count)
+    # end
     
   end
   
   def online_users_count
-    ($redis.get(stream_id) || self.view_count).to_i
+    ($redis.get(stream_id) || 0).to_i
   end
   
   # ------------------------------------------------------------------------------- #

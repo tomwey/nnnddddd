@@ -40,7 +40,17 @@ index do
   column '直播流ID', sortable: false do |lv|
     lv.stream_id
   end
-  column '人数统计' do |lv| raw("围观人数：#{lv.view_count}<br>在线人数：#{lv.online_users_count}<br>弹幕数：#{lv.msg_count}<br>点赞数：#{lv.likes_count}")
+  column '人数统计' do |lv|
+    if lv.state.to_sym == :closed and lv.video_file.present?
+      # 热门的直播
+      raw("直播结束 => <br>围观人数：#{lv.view_count}<br>弹幕数：#{lv.msg_count}<br>点赞数：#{lv.likes_count}")
+    elsif lv.state.to_sym == :living and lv.video_file.blank?
+      # 正在直播
+      raw("正在直播 => <br>在线人数：#{lv.online_users_count}<br>弹幕数：#{lv.msg_count}<br>点赞数：#{lv.likes_count}")
+    else
+      # 直播还未开始
+      '直播还未开始'
+    end 
   end
   column '直播相关', columns: 3, sortable: false do |live_video|
     raw("RTMP推流地址：#{live_video.rtmp_push_url}<br>
