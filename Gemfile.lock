@@ -26,12 +26,6 @@ GIT
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
 
-GIT
-  remote: git://github.com/njh/ruby-mqtt.git
-  revision: b06dba3d3f24afd3b82a433023accc829df788fa
-  specs:
-    mqtt (0.4.0)
-
 GEM
   remote: https://ruby.taobao.org/
   specs:
@@ -403,7 +397,6 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   mini_magick
-  mqtt!
   newrelic-grape
   pg
   posix-spawn

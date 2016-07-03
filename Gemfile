@@ -55,7 +55,7 @@ gem 'mini_magick'#,'~> 4.2.7'#, require: false
 # 解决大文件上传报内存问题：Cannot allocate memory - identify
 gem 'posix-spawn'
 
-gem 'mqtt', github: 'njh/ruby-mqtt'
+# gem 'mqtt', github: 'njh/ruby-mqtt'
 
 # 上传视频
 gem 'carrierwave-video'

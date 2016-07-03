@@ -1,3 +1,3 @@
-require 'mqtt'
-
-$mqtt = MQTT::Client.connect('localhost')
+# require 'mqtt'
+# 
+# $mqtt = MQTT::Client.connect('localhost')
