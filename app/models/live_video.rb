@@ -122,7 +122,7 @@ class LiveVideo < ActiveRecord::Base
     end
     
     count = $redis.get(stream_id).to_i
-    if count + n > 0
+    if count + n >= 0
       count = count + n
       $redis.set(stream_id, count)
     end
