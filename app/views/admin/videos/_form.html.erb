@@ -18,7 +18,7 @@
   
   <div style="width: 80%; margin-bottom: 20px;">
     <%= f.label :category_id, '所属类别' %><br>
-    <%= f.select :category_id, Category.opened.map { |category| [category.name, category.id] }, { prompt: '-- 请选择类别 --' }  %>
+    <%= f.select :category_id, Category.no_delete.opened.map { |category| [category.name, category.id] }, { prompt: '-- 请选择类别 --' }  %>
   </div>
 
   <div style="width: 80%; margin-bottom: 20px;">

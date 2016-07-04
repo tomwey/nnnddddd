@@ -13,6 +13,11 @@ permit_params :name, :icon, :sort, :user_upload
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
+# controller do
+#   def index
+#     @categories = Category.no_delete.order('id desc')
+#   end
+# end
 
 index do
   selectable_column
@@ -37,7 +42,8 @@ index do
       item '打开', open_admin_category_path(cata), method: :put
     end
     item " 编辑", edit_admin_category_path(cata)
-    item " 删除", admin_category_path(cata), method: :delete, data: { confirm: '你确定吗？' }
+    item " 删除", delete_admin_category_path(cata), method: :put, data: { confirm: '你确定吗？' }
+    # item " 删除", delete_admin_category_path(cata), method: :delete, data: { confirm: '你确定吗？' }
   end
 end
 
@@ -57,6 +63,14 @@ batch_action :close do |ids|
   redirect_to collection_path, alert: '关闭成功'
 end
 
+# 批量删除
+batch_action :delete do |ids|
+  batch_action_collection.find(ids).each do |cata|
+    cata.delete!
+  end
+  redirect_to collection_path, alert: '删除成功'
+end
+
 member_action :open, method: :put do
   resource.open!
   redirect_to collection_path, notice: "已打开"
@@ -65,6 +79,11 @@ end
 member_action :close, method: :put do
   resource.close!
   redirect_to collection_path, notice: "已关闭"
+end
+
+member_action :delete, method: :put do
+  resource.delete!
+  redirect_to collection_path, notice: "已删除"
 end
 
 form html: { multipart: true } do |f|
