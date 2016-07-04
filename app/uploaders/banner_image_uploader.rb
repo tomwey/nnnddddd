@@ -2,12 +2,14 @@
 
 class BannerImageUploader < BaseUploader
 
+  storage :qiniu
+
   version :large do
-    process resize_to_fill: [1080, 412]
+    process resize_to_fill: [1080, 580]
   end
   
   version :thumb do
-    process resize_to_fill: [540, 206]
+    process resize_to_fill: [540, 290]
   end
   
   version :small do

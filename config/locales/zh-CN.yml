@@ -47,6 +47,7 @@
         image: "广告图片"
         link: "链接"
         sort: "显示顺序"
+        category_id: '所属类别'
       feedback:
         author: "用户"
         content: "反馈内容"

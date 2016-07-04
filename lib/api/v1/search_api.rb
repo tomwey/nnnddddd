@@ -70,13 +70,7 @@ module API
           keyword = params[:q].strip
           type = params[:type].blank? ? 2 : params[:type].to_i
           type = 2 if type < 1 or type > 2
-          
-          # 记录搜索关键字信息
-          @search = Search.where(keyword: keyword, video_type: type).first_or_create
-          unless @search.blank?
-            @search.add_search_count
-          end
-          
+                    
           # 开始搜索
           if type == 1
             searchable_type = 'LiveVideo'
@@ -90,6 +84,14 @@ module API
             @searchables = klass.search(keyword)
           else
             @searchables = klass.approved.search(keyword)
+          end
+          
+          if @searchables.size > 0
+            # 记录搜索关键字信息
+            @search = Search.where(keyword: keyword, video_type: type).first_or_create
+            unless @search.blank?
+              @search.add_search_count
+            end
           end
           
           if params[:page]

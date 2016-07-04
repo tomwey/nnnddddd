@@ -9,7 +9,7 @@ module API
         end
         get do
           size = params[:size].blank? ? 5 : params[:size].to_i 
-          @banners = Banner.sorted.recent.limit(size)
+          @banners = Banner.where(category_id: nil).sorted.recent.limit(size)
           render_json(@banners, API::V1::Entities::Banner)
         end
       end # end resource

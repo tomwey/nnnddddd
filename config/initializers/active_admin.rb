@@ -1,3 +1,10 @@
+class MyFooter < ActiveAdmin::Component
+  def build
+    super(id: "footer")
+    para "版权所有 #{Date.today.year} 中国旅游TV"
+  end
+end
+
 ActiveAdmin.setup do |config|
   # == Site Title
   #
@@ -13,6 +20,10 @@ ActiveAdmin.setup do |config|
 
   # Set an optional image to be displayed for the header
   # instead of a string (overrides :site_title)
+  
+  # 自定义页脚
+  config.view_factory.footer = MyFooter
+  
   #
   # Note: Aim for an image that's 21px high so it fits in the header.
   #
