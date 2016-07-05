@@ -8,6 +8,7 @@ module API
         desc "获取直播列表"
         params do
           optional :token, type: String, desc: 'Token'
+          optional :pl,    type: String, desc: '系统平台, iOS或者Android'
         end
         get :channels do
           @videos = LiveVideo.living.recent
