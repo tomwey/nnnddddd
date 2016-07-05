@@ -71,7 +71,7 @@ module API
         desc "上传视频"
         params do 
           requires :token,       type: String,  desc: "用户认证Token"
-          # optional :category_id, type: Integer, desc: "类别ID"
+          optional :category_id, type: Integer, desc: "类别ID"
           requires :title,       type: String,  desc: "视频标题"
           optional :body,        type: String,  desc: "视频简介"
           # requires :video,       type: Rack::Multipart::UploadedFile, desc: "视频二进制文件, 视频格式为：mp4,mov,3gp,avi,mpeg"
@@ -82,7 +82,7 @@ module API
           user = authenticate!
           
           # category_id = params[:category_id].blank? ? 3 : params[:category_id].to_i
-          category = Category.current_user_upload
+          category = Category.current_user_upload || Category.find_by(id: params[:category_id])
           if category.blank?
             return render_error(4004, '没有该类别')
           end
