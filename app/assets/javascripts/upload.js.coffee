@@ -23,10 +23,12 @@ $(document).ready ->
     photoForm2.bind "ajax:success", (e, data) ->
       console.log('success')
       $("#live_video_video_file").val(data.file)
+      $("#progress-bar").append('<p style="font-size: 20px; color: green; margin-top: 10px;">上传成功!</p>')
       console.log(data)
 
     photoForm2.bind "ajax:failure", (e, data) ->
       console.log('failure')
+      $("#progress-bar").append('<p style="font-size: 20px; color: red; margin-top: 10px;">上传失败!</p>')
       console.log(data)
   
   photoForm = $("form#photograph-uploader")
@@ -47,8 +49,10 @@ $(document).ready ->
     photoForm.bind "ajax:success", (e, data) ->
       console.log('success')
       $("#video_file").val(data.file)
+      $("#progress-bar").append('<p style="font-size: 20px; color: green; margin-top: 10px;">上传成功!</p>')
       console.log(data)
 
     photoForm.bind "ajax:failure", (e, data) ->
       console.log('failure')
+      $("#progress-bar").append('<p style="font-size: 20px; color: red; margin-top: 10px;">上传失败!</p>')
       console.log(data)
