@@ -1,5 +1,10 @@
 <div class="dropzone" id="dropzone">
   <%= qiniu_uploader_form callback_url: videos_path,
+  # scope:                "af-container",
+  # deadline:             1608652800,
+  # persistentOps:        "avthumb/mp4/wmImage/aHR0cDovL3Rlc3QtMi5xaW5pdWRuLmNvbS9sb2dvLnBuZw==/wmText/d2Vsb3ZlcWluaXU=/wmFontColor/cmVk/wmFontSize/60/wmGravityText/North|saveas/dGVzdDpzYW1wbGVfdGFyZ2V0Lm1wNA==",
+  #       # persistentPipeline:   "newtest",
+  #   persistentNotifyUrl:  "http://fake.com/qiniu/notify",
     expires_in:    72000,
     bucket:        'zgnytv',
     id:            "photograph-uploader",
