@@ -33,6 +33,7 @@
         key: "配置名称"
         value: "配置值"
         description: "配置说明"
+        file: "上传文件"
       admin:
         email: "邮箱"
         password: "密码"

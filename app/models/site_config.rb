@@ -2,6 +2,8 @@ class SiteConfig < ActiveRecord::Base
   validates :key, :value, presence: true
   validates_uniqueness_of :key
   
+  mount_uploader :file, FileUploader
+  
   def self.method_missing(method, *args)
     method_name = method.to_s
     super(method, *args)
@@ -29,10 +31,7 @@ class SiteConfig < ActiveRecord::Base
   after_save :update_cache
   def update_cache
     Rails.cache.write("site_config:#{self.key}", self.value)
-    if self.key == 'wechat_menu'
-      # 创建自定义菜单
-      WX::Base.create_wechat_menu(self.value)
-    end
+    
   end
 
   def self.find_by_key(key)

@@ -66,7 +66,8 @@ module API
           pipeline = 'video_waterprint' #设定自己账号下的pipleline
 
           #要进行转码的转码操作。 
-          fops = "avthumb/mp4/wmImage/aHR0cDovLzc4cmU1Mi5jb20xLnowLmdsYi5jbG91ZGRuLmNvbS9yZXNvdXJjZSUyRmxvZ28uanBn"
+          water_icon_url = Qiniu::Utils.urlsafe_base64_encode(SiteConfig.find_by(key: "watermark_icon").try(:file_url))
+          fops = "avthumb/mp4/wmImage/#{water_icon_url}/wmGravity/NorthWest"
 
           #可以对转码后的文件进行使用saveas参数自定义命名，当然也可以不指定文件会默认命名并保存在当间。
           saveas_key = Qiniu::Utils.urlsafe_base64_encode("zgnytv:#{key}")

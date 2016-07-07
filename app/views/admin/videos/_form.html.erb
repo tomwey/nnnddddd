@@ -1,14 +1,17 @@
+<% 
+key = "uploads/video/#{SecureRandom.uuid}.mp4"
+ %>
 <div class="dropzone" id="dropzone">
   <%= qiniu_uploader_form callback_url: videos_path,
   # scope:                "zgnytv",
   # deadline:             Time.now.to_i + 72000,
-  # persistentOps:        "avthumb/mp4/wmImage/aHR0cDovLzc4cmU1Mi5jb20xLnowLmdsYi5jbG91ZGRuLmNvbS9yZXNvdXJjZSUyRmxvZ28uanBn",
-  # persistentPipeline:   "video_waterprint",
+  persistentOps:        "avthumb/mp4/wmImage/" + Qiniu::Utils.urlsafe_base64_encode(SiteConfig.find_by(key: "watermark_icon").try(:file_url)) + "/wmGravity/NorthWest|saveas/" + Qiniu::Utils.urlsafe_base64_encode("zgnytv:#{key}"),
+  persistentPipeline:   "video_waterprint",
   #   persistentNotifyUrl:  'http://123.59.129.197/videos',
     expires_in:    72000,
     bucket:        'zgnytv',
     id:            "photograph-uploader",
-    key:           "uploads/video/#{SecureRandom.uuid}.mp4",
+    key:           key,
     custom_fields: {aaa:1,bbb:2},
     progress_bar_id: 'progress-bar',
     drop_paste_zone_id: 'dropzone' do %>
