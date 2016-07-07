@@ -61,6 +61,20 @@ module API
               3600    #token过期时间，默认为3600s
           )
 
+          # 加入水印功能
+          #转码是使用的队列名称。 
+          pipeline = 'video_waterprint' #设定自己账号下的pipleline
+
+          #要进行转码的转码操作。 
+          fops = "avthumb/mp4/wmImage/aHR0cDovLzc4cmU1Mi5jb20xLnowLmdsYi5jbG91ZGRuLmNvbS9yZXNvdXJjZSUyRmxvZ28uanBn"
+
+          #可以对转码后的文件进行使用saveas参数自定义命名，当然也可以不指定文件会默认命名并保存在当间。
+          saveas_key = Qiniu::Utils.urlsafe_base64_encode("zgnytv:#{key}")
+          fops = fops+'|saveas/'+ saveas_key
+
+          put_policy.persistent_ops = fops
+          put_policy.persistent_pipeline = pipeline
+          
           #生成上传 Token
           uptoken = Qiniu::Auth.generate_uptoken(put_policy)
           
