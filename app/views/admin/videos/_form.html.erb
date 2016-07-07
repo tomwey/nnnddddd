@@ -5,7 +5,7 @@ key = "uploads/video/#{SecureRandom.uuid}.mp4"
   <%= qiniu_uploader_form callback_url: videos_path,
   # scope:                "zgnytv",
   # deadline:             Time.now.to_i + 72000,
-  persistentOps:        "avthumb/mp4/wmImage/" + Qiniu::Utils.urlsafe_base64_encode(SiteConfig.find_by(key: "watermark_icon").try(:file_url)) + "/wmGravity/NorthWest|saveas/" + Qiniu::Utils.urlsafe_base64_encode("zgnytv:#{key}"),
+  persistentOps:        "avthumb/mp4/wmImage/" + Qiniu::Utils.urlsafe_base64_encode(SiteConfig.find_by(key: "watermark_icon").file_url) + "/wmGravity/NorthWest|saveas/" + Qiniu::Utils.urlsafe_base64_encode("zgnytv:#{key}"),
   persistentPipeline:   "video_waterprint",
   #   persistentNotifyUrl:  'http://123.59.129.197/videos',
     expires_in:    72000,
