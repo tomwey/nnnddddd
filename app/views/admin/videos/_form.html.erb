@@ -1,10 +1,10 @@
 <div class="dropzone" id="dropzone">
   <%= qiniu_uploader_form callback_url: videos_path,
-  # scope:                "af-container",
-  # deadline:             1608652800,
-  # persistentOps:        "avthumb/mp4/wmImage/aHR0cDovL3Rlc3QtMi5xaW5pdWRuLmNvbS9sb2dvLnBuZw==/wmText/d2Vsb3ZlcWluaXU=/wmFontColor/cmVk/wmFontSize/60/wmGravityText/North|saveas/dGVzdDpzYW1wbGVfdGFyZ2V0Lm1wNA==",
-  #       # persistentPipeline:   "newtest",
-  #   persistentNotifyUrl:  "http://fake.com/qiniu/notify",
+  scope:                "zgnytv",
+  deadline:             Time.now.to_i + 72000,
+  persistentOps:        "avthumb/mp4/wmImage/aHR0cDovLzc4cmU1Mi5jb20xLnowLmdsYi5jbG91ZGRuLmNvbS9yZXNvdXJjZSUyRmxvZ28uanBn",
+  persistentPipeline:   "video_waterprint",
+    persistentNotifyUrl:  'http://123.59.129.197/videos',
     expires_in:    72000,
     bucket:        'zgnytv',
     id:            "photograph-uploader",
@@ -21,7 +21,7 @@
 </div>
 
 <%= form_for [:admin, @video] do |f| %>
-  
+  <%= f.object.errors.full_messages.join(',') %>
   <div style="width: 80%; margin-bottom: 20px;">
     <%= f.label :category_id, '所属类别' %><br>
     <%= f.select :category_id, Category.no_delete.opened.map { |category| [category.name, category.id] }, { prompt: '-- 请选择类别 --' }  %>
