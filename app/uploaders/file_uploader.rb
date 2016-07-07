@@ -5,8 +5,8 @@ class FileUploader < CarrierWave::Uploader::Base
   # include RedactorRails::Backend::CarrierWave
 
   # storage :fog
-  # storage :file
-  storage :qiniu
+  storage :file
+  # storage :qiniu
 
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
