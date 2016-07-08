@@ -113,6 +113,7 @@
       page:
         title: '标题'
         slug: 'slug'
+        body: '内容'
         
     errors:
       models:

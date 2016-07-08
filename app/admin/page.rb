@@ -5,7 +5,7 @@ menu priority: 8, label: "文档"
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :list, :of, [:title, :slug, :body], :on, :model
+permit_params :title, :slug, :body
 
 filter :title
 filter :slug
