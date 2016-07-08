@@ -110,6 +110,9 @@
       search:
         keyword: '关键字'
         search_count: '搜索次数'
+      page:
+        title: '标题'
+        slug: 'slug'
         
     errors:
       models:

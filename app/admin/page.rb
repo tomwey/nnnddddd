@@ -15,7 +15,7 @@ index do
   selectable_column
   column('#',:id) { |page| link_to page.id, admin_page_path(page) }
   column(:title, sortable: false) { |page| link_to page.title, admin_page_path(page) }
-  column(:slug, sortable: false) { |page| link_to page_path(page.slug || page), page_path(page.slug || page)  }
+  column('链接地址', sortable: false) { |page| link_to "#{Setting.upload_url}/p/#{page.slug}", "#{Setting.upload_url}/p/#{page.slug}"  }
   
   actions
 end
