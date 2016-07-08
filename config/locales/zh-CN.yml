@@ -112,7 +112,7 @@
         search_count: '搜索次数'
       page:
         title: '标题'
-        slug: 'slug'
+        slug: '链接标记'
         body: '内容'
         
     errors:

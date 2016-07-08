@@ -1,4 +1,7 @@
 <%= form_for [:admin, @page] do |f| %>
+
+  <%= render 'shared/error_messages', target: @page %>
+
   <div style="width: 80%; margin-bottom: 20px;">
     <%= f.label :title, '*标题' %><br>
     <%= f.text_field :title %>

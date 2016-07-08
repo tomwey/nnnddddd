@@ -69,7 +69,9 @@ uptoken = Qiniu::Auth.generate_uptoken(put_policy)
   </div>
   
 <%= form_for [:admin, @video] do |f| %>
-  <%= f.object.errors.full_messages.join(',') %>
+  
+  <%= render 'shared/error_messages', target: @video %>
+  
   <div style="width: 80%; margin-bottom: 20px;">
     <%= f.label :category_id, '所属类别' %><br>
     <%= f.select :category_id, Category.no_delete.opened.map { |category| [category.name, category.id] }, { prompt: '-- 请选择类别 --' }  %>
