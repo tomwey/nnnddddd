@@ -5,9 +5,12 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+html {
+  background-color: rgb(240,240,240);
+}
 body {
 //  padding-top: 60px;
-  background-color: transparent;
+  background-color: rgb(240,240,240);
 }
 
 .pages {
