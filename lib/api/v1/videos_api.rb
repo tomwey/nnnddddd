@@ -58,7 +58,7 @@ module API
           put_policy = Qiniu::Auth::PutPolicy.new(
               bucket,      # 存储空间
               key,     # 最终资源名，可省略，即缺省为“创建”语义，设置为nil为普通上传 
-              3600    #token过期时间，默认为3600s
+              72000000    #token过期时间，默认为3600s
           )
 
           # 加入水印功能

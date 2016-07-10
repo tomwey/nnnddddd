@@ -1,6 +1,6 @@
 <div class="dropzone" id="dropzone">
   <%= qiniu_uploader_form callback_url: videos_path,
-    expires_in:    72000,
+    expires_in:    72000000,
     bucket:        'zgnytv',
     id:            "photograph-uploader2",
     key:           "uploads/live_video/#{SecureRandom.uuid}.mp4",
