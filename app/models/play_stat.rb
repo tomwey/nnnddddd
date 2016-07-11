@@ -8,4 +8,17 @@ class PlayStat < ActiveRecord::Base
   #     video.update_attribute(:view_count, video.view_count + 1) unless video.blank?
   #   end
   # end
+  
+  def stream
+    if self.stream_type.to_i == 1
+      s_type = 'LiveVideo'
+    else
+      s_type = 'Video'
+    end
+    
+    klass = s_type.classify.constantize
+    
+    stream = klass.find_by(stream_id: self.stream_id)
+    stream
+  end
 end

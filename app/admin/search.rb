@@ -18,7 +18,7 @@ menu priority: 6, label: '搜索统计'
 actions :all, except: [:show, :new, :create, :edit, :update]
 
 index do
-  # selectable_column
+  selectable_column
   column '#', :id
   column :keyword, sortable: false
   column :search_count
