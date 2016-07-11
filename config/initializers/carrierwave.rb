@@ -12,5 +12,7 @@ end
   config.qiniu_bucket_domain  = SiteConfig.qiniu_bucket_domain
   config.qiniu_bucket_private = true #default is false
   config.qiniu_block_size     = 4*1024*1024
+  # config.qiniu_expires_in     = 10 * 365 * 24 * 3600
+  config.qiniu_private_url_expires_in = 10 * 365 * 24 * 3600 # 设置token失效时间
   config.qiniu_protocol       = "http"
 end
