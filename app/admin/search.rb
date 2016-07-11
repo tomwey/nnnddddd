@@ -15,14 +15,16 @@ menu priority: 6, label: '搜索统计'
 #   permitted
 # end
 
-actions :all, except: [:new, :create, :edit, :update, :destroy]
+actions :all, except: [:show, :new, :create, :edit, :update]
 
 index do
   # selectable_column
   column '#', :id
   column :keyword, sortable: false
   column :search_count
-  # actions
+  actions defaults: false do |search|
+    item "删除", admin_search_path(search), method: :delete, data: { confirm: '你确定吗？' }
+  end
 end
 
 

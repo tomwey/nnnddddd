@@ -18,6 +18,8 @@
       page: '文档'
       payout: '提现'
       pay_history: '交易明细'
+      play_stat: '播放统计'
+      view_history: '观看历史'
     attributes:
       user:
         mobile: "手机"
@@ -114,6 +116,17 @@
         title: '标题'
         slug: '链接标记'
         body: '内容'
+      play_stat:
+        stream_id: '流ID'
+        stream_type: '流类型'
+        udid: '设备ID'
+        device_model: '设备类型'
+        os_version: '系统版本'
+        app_version: '应用版本'
+        screen_size: '屏幕分辨率'
+        lang_code: '语言码'
+        country_code: '国家码'
+        created_at: '时间'
         
     errors:
       models:
