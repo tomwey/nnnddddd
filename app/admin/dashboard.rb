@@ -17,7 +17,13 @@ ActiveAdmin.register_page "Dashboard" do
         panel "最新用户" do
           table_for User.order('id desc').limit(20) do
             column :id
-            column('头像') { |user| image_tag(user.avatar_url(:large), size: '60x60') }
+            column('头像') do |user|
+              if user.avatar.blank?
+                image_tag "avatar/large.png", size: '30x30'
+              else
+                image_tag user.avatar_url(:large), size: '30x30'
+              end
+            end 
             column('账户') { |user| user.nickname || user.hack_mobile }
           end
         end
@@ -46,7 +52,7 @@ ActiveAdmin.register_page "Dashboard" do
           table_for PlayStat.order('id desc').limit(20) do
             column :id
             column '视频流' do |ps|
-              "[#{ps.stream_type == 1 ? "直播" : "点播"}] #{ps.stream.try(:title)}"
+              "[#{ps.stream_type == 1 ? "直播" : "点播"}] #{ps.stream.try(:title) || ps.stream_id}"
             end
             column :udid, sortable: false
             column :device_model, sortable: false
@@ -56,6 +62,7 @@ ActiveAdmin.register_page "Dashboard" do
             column '国家语言', sortable: false do |ps|
               "#{ps.lang_code}_#{ps.country_code}"
             end
+            column :created_at
           end
         end
       end

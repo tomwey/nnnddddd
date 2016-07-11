@@ -54,7 +54,7 @@ index do
   column :id
   column :nickname, sortable: false
   column :avatar, sortable: false do |u|
-    u.avatar.blank? ? "" : image_tag(u.avatar.url(:small))
+    u.avatar.blank? ? image_tag('avatar/large.png', size: '30x30') : image_tag(u.avatar.url(:large), size: '30x30')
   end
   column :mobile, sortable: false
   # column 'Token', sortable: false do |u|
