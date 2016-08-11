@@ -5,7 +5,7 @@ menu priority: 4, label: '直播'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :title, :cover_image, :body, :video_file, :likes_count #:stream_id
+permit_params :title, :cover_image, :body, :video_file, :likes_count, :view_count #:stream_id
 #
 # or
 #

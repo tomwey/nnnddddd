@@ -34,6 +34,12 @@
     <%= f.label :likes_count, '点赞数' %><br>
     <%= f.text_field :likes_count %>
   </div>
+  <% if f.object.state == 'closed' %>
+  <div style="width: 80%; margin-bottom: 20px;">
+    <%= f.label :view_count, '观看数' %><br>
+    <%= f.text_field :view_count %>
+  </div>
+  <% end %>
   <% end %>
   
   <%= f.hidden_field :video_file, value: f.object.video_file %>

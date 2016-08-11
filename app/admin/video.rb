@@ -5,7 +5,7 @@ menu priority: 5, label: '视频'
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :title, :file, :cover_image, :body, :category_id, :likes_count, :sort#, :stream_id
+permit_params :title, :file, :cover_image, :body, :category_id, :likes_count, :view_count, :sort#, :stream_id
 #
 # or
 #
